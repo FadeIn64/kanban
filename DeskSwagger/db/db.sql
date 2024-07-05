@@ -36,7 +36,6 @@ create table desk_column(
 create table desk_task(
     id int primary key generated always as identity,
     desk int not null,
-    desk_column int not null,
     header text not null,
     description text null,
     author text not null,
@@ -52,10 +51,7 @@ create table desk_task(
     constraint process_date_check check ( startDate < endDate ),
     constraint desk_task_fk foreign key (desk) references desk(id)
                       on update cascade
-                      on delete cascade,
-    constraint column_task_fk foreign key (desk_column) references desk_column(id)
-                      on update cascade
-                      on delete no action
+                      on delete cascade
 );
 
 create table task_performers(

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: trelo
+
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: on
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: danila
+    password: fedin
+    url: jdbc:postgresql://localhost:5432/trelo
