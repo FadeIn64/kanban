@@ -3,7 +3,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
     env_file:
-      - zookeeper.env
+      - docker/zookeeper.env
     ports:
       - "22181:2181"
     networks:
@@ -16,13 +16,13 @@ services:
       - "9093:9093"
       - "9092:9092"
     env_file:
-      - kafka.env
+      - docker/kafka.env
     networks:
       my_net:
   service-db:
     image: postgres:15-alpine3.19
     env_file:
-      - db.env
+      - docker/db.env
     ports:
       - "5432:5432"
     healthcheck:
