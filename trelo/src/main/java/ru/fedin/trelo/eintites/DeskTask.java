@@ -3,12 +3,8 @@ package ru.fedin.trelo.eintites;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import ru.fedin.trelo.eintites.enums.Importance;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,21 +34,22 @@ public class DeskTask {
     private String author;
 
     @NotNull
-    @Column(name = "importance", nullable = false, length = Integer.MAX_VALUE)
-    private String importance;
+    @Column(name = "importance")
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
 
     @Column(name = "createdate")
-    private LocalDate createdate = LocalDate.now();
+    private LocalDate createDate = LocalDate.now();
 
     @Column(name = "startdate")
-    private LocalDate startdate;
+    private LocalDate startDate;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "task")
     private List<TaskPerformer> performers = new ArrayList<>();
 
     @Column(name = "enddate")
-    private LocalDate enddate;
+    private LocalDate endDate;
 
     @Column(name = "coast")
     private Double coast;

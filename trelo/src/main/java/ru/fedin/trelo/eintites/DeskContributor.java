@@ -28,11 +28,4 @@ public class DeskContributor {
     @Column(name = "contributor", nullable = false, length = Integer.MAX_VALUE)
     private String contributor;
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "task_performers",
-//            joinColumns = { @JoinColumn(name = "contributor")},
-//            inverseJoinColumns = {@JoinColumn(name = "task")}
-//    )
-//    private List<DeskTask> performers = new ArrayList<>();
 }
