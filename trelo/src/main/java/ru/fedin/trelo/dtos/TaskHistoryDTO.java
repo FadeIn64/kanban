@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DeskHistoryDTO {
+public class TaskHistoryDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer id;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
