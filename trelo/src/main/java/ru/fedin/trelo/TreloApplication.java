@@ -13,9 +13,9 @@ public class TreloApplication {
 	public static void main(String[] args) {
 		var ctx = SpringApplication.run(TreloApplication.class, args);
 
-		var repo = ctx.getBean(DeskRepository.class);
-		var mapper = ctx.getBean(DeskMapper.class);
-		System.out.println(mapper.toDto(repo.findById(1).get()).getAuthor());
+//		var repo = ctx.getBean(DeskRepository.class);
+//		var mapper = ctx.getBean(DeskMapper.class);
+//		System.out.println(mapper.toDto(repo.findById(1).get()).getAuthor());
 	}
 
 }
