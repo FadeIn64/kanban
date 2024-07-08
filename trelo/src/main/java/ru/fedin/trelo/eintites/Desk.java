@@ -2,9 +2,7 @@ package ru.fedin.trelo.eintites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "desk")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Desk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

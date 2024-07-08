@@ -2,7 +2,10 @@ package ru.fedin.trelo.eintites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 import ru.fedin.trelo.eintites.enums.Importance;
 
@@ -13,6 +16,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "desk_task")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeskTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

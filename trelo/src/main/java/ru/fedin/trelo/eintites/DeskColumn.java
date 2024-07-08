@@ -2,15 +2,16 @@ package ru.fedin.trelo.eintites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
 @Table(name = "desk_column")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeskColumn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

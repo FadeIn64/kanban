@@ -2,10 +2,7 @@ package ru.fedin.trelo.eintites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,6 +13,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "desk_contributors")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeskContributor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
