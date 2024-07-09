@@ -1,7 +1,9 @@
 package ru.fedin.trelo.services;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelo.dtos.DeskContributorDTO;
 import ru.fedin.trelo.dtos.DeskDTO;
 import ru.fedin.trelo.eintites.Desk;
@@ -28,13 +30,40 @@ public class DeskService {
     private final DeskContributorRepository contributorRepository;
     private final ContributorMapper contributorMapper;
 
+    private final DefaultColumnCreator defaultColumnCreator;
 
+    @Transactional
     public DeskDTO findById(int id){
         var opt = deskRepository.findById(id);
         var desk = opt.orElse(EMPTY);
         return deskMapper.toDto(desk);
     }
 
+    @Transactional
+    public DeskDTO create(DeskDTO dto){
+        var entity = deskMapper.toEntity(dto);
+        entity =  deskRepository.save(entity);
+
+        var columns = defaultColumnCreator.createDefault(entity.getId());
+
+        entity.setDeskColumns(columns);
+        entity.setDeskContributors(
+                List.of(DeskContributor
+                        .builder()
+                        .contributor(entity.getAuthor())
+                        .build()));
+
+        return deskMapper.toDto(entity);
+    }
+
+    @Transactional
+    public void delete(Integer id){
+        if (!deskRepository.existsById(id))
+            return;
+        deskRepository.removeById(id);
+    }
+
+    @Transactional
     public DeskDTO rename(Integer deskId, String newName){
         var opt = deskRepository.findById(deskId);
         if (opt.isEmpty())
@@ -45,6 +74,7 @@ public class DeskService {
         return deskMapper.toDto(desk);
     }
 
+    @Transactional
     public List<DeskContributorDTO> addContributor(int deskId, String user){
 
         if (!deskRepository.existsById(deskId))
@@ -58,6 +88,7 @@ public class DeskService {
         return contributorMapper.toDto(contributorRepository.findAllByDesk(deskId));
     }
 
+    @Transactional
     public boolean removeContributor(int deskId, String user){
 
         if (!deskRepository.existsById(deskId))

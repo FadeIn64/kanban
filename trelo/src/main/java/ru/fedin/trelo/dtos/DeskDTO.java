@@ -18,7 +18,7 @@ public class DeskDTO {
 
     private String name;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

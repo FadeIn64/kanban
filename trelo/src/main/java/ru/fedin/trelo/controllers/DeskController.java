@@ -37,8 +37,19 @@ public class DeskController {
             description = "Возвращает новую доску, включая всю информацию о колонках, задачах, участников.")
     @PostMapping
     ResponseEntity createDesk(@RequestBody DeskDTO desk){
+
+        try {
+            desk = deskService.create(desk);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(
+                    e.getClass().getName() + "\n" + e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
         return new ResponseEntity<>(
-                new DeskDTO(2, desk.getName(), desk.getAuthor(), List.of(new DeskColumnDTO()), List.of(new DeskContributorDTO(0, 0, "test")), new ArrayList<DeskTaskDTO>()),
+                desk,
                 HttpStatus.CREATED
         );
     }
@@ -47,6 +58,7 @@ public class DeskController {
     description = "Удаляет всю доску с ее элементами")
     @DeleteMapping("/{deskId}")
     ResponseEntity deleteDesk(@PathVariable int deskId){
+        deskService.delete(deskId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -76,9 +88,10 @@ public class DeskController {
 
     @Operation(summary = "Удалить участника")
     @DeleteMapping("/{deskId}/contributor")
-    HttpStatus removeContributor(@PathVariable Integer deskId, @RequestBody String user){
+    ResponseEntity removeContributor(@PathVariable Integer deskId, @RequestBody String user){
         var res = deskService.removeContributor(deskId, user);
-        return (res) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+        return (res) ? new ResponseEntity(HttpStatus.ACCEPTED)
+                : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 

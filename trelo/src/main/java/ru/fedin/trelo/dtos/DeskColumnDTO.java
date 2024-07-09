@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -20,7 +17,6 @@ public class DeskColumnDTO {
 
     private String name;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer next;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
