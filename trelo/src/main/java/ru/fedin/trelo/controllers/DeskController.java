@@ -7,14 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fedin.trelo.dtos.DeskColumnDTO;
-import ru.fedin.trelo.dtos.DeskContributorDTO;
 import ru.fedin.trelo.dtos.DeskDTO;
-import ru.fedin.trelo.dtos.DeskTaskDTO;
 import ru.fedin.trelo.services.DeskService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/desk")
