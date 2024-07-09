@@ -17,6 +17,7 @@ public class DeskColumnDTO {
 
     private String name;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer next;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

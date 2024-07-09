@@ -3,27 +3,37 @@ package ru.fedin.trelo.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelo.dtos.DeskColumnDTO;
+import ru.fedin.trelo.services.ColumnService;
 
 @RestController
 @RequestMapping("/column")
 @Tag(name = "Колонка", description = "Работа с колонками")
+@RequiredArgsConstructor
 public class ColumnController {
 
-    @Operation(summary = "Создать колонку")
+    private final ColumnService columnService;
+
+    @Operation(summary = "Создать колонку",
+                description = "Добавляет колонку в конец")
     @PostMapping
     ResponseEntity create(@RequestBody DeskColumnDTO column){
-        return new ResponseEntity<>(new DeskColumnDTO(1, column.getDesk(), column.getName(), column.getNext(), 0),
+        column = columnService.create(column);
+        return new ResponseEntity<>(column,
                 HttpStatus.CREATED);
     }
 
     @Operation(summary = "Найти колонку по id")
     @GetMapping("/{columnId}")
     ResponseEntity getColumn(@PathVariable int columnId){
-        return new ResponseEntity<>(new DeskColumnDTO(1, 1, "column.name", 0, 0), HttpStatus.OK);
+        var column = columnService.findById(columnId);
+        if (column.getId() == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
     @Operation(summary = "Удалить колонку",
@@ -35,18 +45,22 @@ public class ColumnController {
 
     @Operation(summary = "Переименовать колонку")
     @PutMapping("/{columnId}")
-    HttpStatus renameColumn(@PathVariable String columnId,
+    HttpStatus renameColumn(@PathVariable int columnId,
                             @RequestBody
                             @Parameter(description = "Новое имя") String newName){
+        var column = columnService.rename(columnId, newName);
         return HttpStatus.ACCEPTED;
     }
 
     @Operation(summary = "передвинуть колонку")
     @PutMapping("/{columnId}/move")
-    HttpStatus moveColumn(@PathVariable String columnId,
+    ResponseEntity moveColumn(@PathVariable int columnId,
                           @Parameter(description = "Смещение колнки. Значения меньше 0 двигуют уолонку к предыдущим, большее - к следующим")
                           @RequestParam int offset){
-        return HttpStatus.ACCEPTED;
+        var columns = columnService.move(columnId, offset);
+        if (columns.size() == 0)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(columns);
     }
 
 }
