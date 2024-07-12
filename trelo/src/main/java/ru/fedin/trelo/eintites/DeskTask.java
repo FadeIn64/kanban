@@ -10,6 +10,7 @@ import org.hibernate.annotations.Formula;
 import ru.fedin.trelo.eintites.enums.Importance;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,17 +46,17 @@ public class DeskTask {
     private Importance importance;
 
     @Column(name = "createdate")
-    private LocalDate createDate = LocalDate.now();
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @Column(name = "startdate")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "task")
     private List<TaskPerformer> performers = new ArrayList<>();
 
     @Column(name = "enddate")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "coast")
     private Double coast;

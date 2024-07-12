@@ -2,11 +2,14 @@ package ru.fedin.trelo.eintites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -26,7 +29,7 @@ public class TaskHistory {
     @JoinColumn(name = "task", nullable = false)
     private DeskTask task;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "column_from", nullable = false)
@@ -39,6 +42,6 @@ public class TaskHistory {
     private DeskColumn columnTo;
 
     @Column(name = "change_date")
-    private LocalDate changeDate;
+    private LocalDateTime changeDate;
 
 }

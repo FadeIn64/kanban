@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +20,6 @@ public class TaskHistoryDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DeskColumnDTO to;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate date;
+    private LocalDateTime changeDate;
 
 }

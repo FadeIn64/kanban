@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import ru.fedin.trelo.eintites.enums.Importance;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -21,15 +22,15 @@ public class DeskTaskDTO {
     private Integer column;
     private String header;
     private String description;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<TaskPerformerDTO> performers;
     private Importance importance;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate createDate;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime createDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private double coast;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String file;
