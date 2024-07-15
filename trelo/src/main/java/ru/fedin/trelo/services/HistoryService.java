@@ -10,6 +10,7 @@ import ru.fedin.trelo.mappers.TaskHistoryMapper;
 import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
 import ru.fedin.trelo.repositories.jpa.TaskHistoryRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,6 +46,16 @@ public class HistoryService {
         var task = DeskTask.builder().id(taskId).build();
 
         var histories = repository.findAllByTask(task);
+        return mapper.toDto(histories);
+    }
+
+    @Transactional
+    public List<TaskHistoryDTO> findAllByTaskAndChangeDate(Integer taskId,
+                                                           LocalDateTime changeDate,
+                                                           LocalDateTime changeDate2){
+        var task = DeskTask.builder().id(taskId).build();
+
+        var histories = repository.findAllByTaskAndChangeDateBetween(task, changeDate, changeDate2);
         return mapper.toDto(histories);
     }
 }
