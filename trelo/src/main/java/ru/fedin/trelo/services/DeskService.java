@@ -47,11 +47,12 @@ public class DeskService {
         var columns = defaultColumnCreator.createDefault(entity.getId());
 
         entity.setDeskColumns(columns);
-        entity.setDeskContributors(
-                List.of(DeskContributor
-                        .builder()
-                        .contributor(entity.getAuthor())
-                        .build()));
+//        entity.setDeskContributors(
+//                List.of(DeskContributor
+//                        .builder()
+//                        .contributor(entity.getAuthor())
+//                        .desk(entity.getId())
+//                        .build()));
 
         return deskMapper.toDto(entity);
     }
