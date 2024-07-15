@@ -7,6 +7,6 @@ import ru.fedin.trelo.eintites.TaskPerformer;
 
 import java.util.Optional;
 
-public interface TaskPerformerRepository extends JpaRepository<TaskPerformer, Integer> {
+public interface TaskPerformerRepository extends DeleteModifyJpaRepository<TaskPerformer, Integer> {
     Optional<TaskPerformer> findByContributor(@NotNull DeskContributor contributor);
 }

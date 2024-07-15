@@ -8,7 +8,7 @@ import ru.fedin.trelo.eintites.TaskHistory;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TaskHistoryRepository extends JpaRepository<TaskHistory, Integer> {
+public interface TaskHistoryRepository extends DeleteModifyJpaRepository<TaskHistory, Integer> {
 
     List<TaskHistory> findAllByTask(@NotNull DeskTask task);
 

@@ -7,7 +7,7 @@ import ru.fedin.trelo.eintites.DeskColumn;
 import java.util.List;
 import java.util.Optional;
 
-public interface DeskColumnRepository extends JpaRepository<DeskColumn, Integer> {
+public interface DeskColumnRepository extends DeleteModifyJpaRepository<DeskColumn, Integer> {
 
     Optional<DeskColumn> findByPrevAndDesk(Integer prev, @NotNull Integer desk);
     Optional<DeskColumn> findByNextAndDesk(Integer next, @NotNull Integer desk);
