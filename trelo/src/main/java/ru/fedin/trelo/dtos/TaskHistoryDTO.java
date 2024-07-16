@@ -16,9 +16,9 @@ public class TaskHistoryDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DeskTaskDTO task;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private DeskColumnDTO from;
+    private DeskColumnDTO columnFrom;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private DeskColumnDTO to;
+    private DeskColumnDTO columnTo;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime changeDate;
 

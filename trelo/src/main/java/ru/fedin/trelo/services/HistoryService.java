@@ -29,12 +29,21 @@ public class HistoryService {
         if (opt.isEmpty())
             return task;
         var newColumn = opt.get();
+
+        if (!newColumn.getDesk().equals(task.getDesk()))
+            return task;
+
         var oldColumn =
                 task.getColumn() == null?
                         null
                         : columnRepository.findById(task.getColumn()).get();
 
-        var history = TaskHistory.builder().task(task).columnTo(newColumn).columnFrom(oldColumn).build();
+        var history = TaskHistory.builder()
+                .task(task)
+                .columnTo(newColumn)
+                .columnFrom(oldColumn)
+                .changeDate(LocalDateTime.now())
+                .build();
         repository.save(history);
 
         task.setColumn(newColumnId);
