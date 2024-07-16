@@ -7,10 +7,12 @@ import ru.fedin.trelo.dtos.DeskColumnDTO;
 import ru.fedin.trelo.eintites.DeskColumn;
 import ru.fedin.trelo.mappers.ColumnMapper;
 import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
+import ru.fedin.trelo.repositories.jpa.DeskTaskRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class ColumnService {
 
     private final DeskColumnRepository columnRepository;
     private final ColumnMapper columnMapper;
+    private final DeskTaskRepository taskRepository;
 
     private static final DeskColumn EMPTY = DeskColumn.builder().id(0).build();
 
@@ -96,6 +99,37 @@ public class ColumnService {
 
     }
 
+    public boolean removeColumn(Integer id){
+        var opt = columnRepository.findById(id);
+        if (opt.isEmpty())
+            return true;
+
+        var entity = opt.get();
+
+        opt = columnRepository.findByNextAndDesk(entity.getId(), entity.getDesk());
+        var prev = opt.orElse(DeskColumn.builder().build());
+
+        opt = columnRepository.findByPrevAndDesk(entity.getId(), entity.getDesk());
+        var next = opt.orElse(DeskColumn.builder().build());
+
+        prev.setNext(next.getId());
+        next.setPrev(prev.getId());
+
+        var columns = Stream.of(prev, next).filter(c->c.getId()!=null).toList();
+        columnRepository.saveAll(columns);
+
+        var tasks = taskRepository.findAllByColumn(id);
+        taskRepository.deleteAll(tasks);
+
+        try {
+            columnRepository.delete(entity);
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
     private List<DeskColumn> moveLeft(List<DeskColumn> columns, DeskColumn column){
 
         var opt_prev = columns.stream()
@@ -110,6 +144,5 @@ public class ColumnService {
         prev.setPrev(column.getId());
 
         return columns;
-
     }
 }

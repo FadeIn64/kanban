@@ -1,7 +1,10 @@
 package ru.fedin.trelo.repositories.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import ru.fedin.trelo.eintites.DeskTask;
 
+import java.util.List;
+
 public interface DeskTaskRepository extends DeleteModifyJpaRepository<DeskTask, Integer> {
+
+    List<DeskTask> findAllByColumn(Integer column);
 }

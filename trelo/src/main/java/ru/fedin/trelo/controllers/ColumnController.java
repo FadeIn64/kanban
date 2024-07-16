@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelo.dtos.DeskColumnDTO;
 import ru.fedin.trelo.services.ColumnService;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/column")
@@ -39,8 +40,10 @@ public class ColumnController {
     @Operation(summary = "Удалить колонку",
     description = "Удаляет вместе с задачами")
     @DeleteMapping("/{columnId}")
-    HttpStatus removeColumn(@PathVariable int columnId){
-        return HttpStatus.OK;
+    ResponseEntity removeColumn(@PathVariable int columnId){
+        if (columnService.removeColumn(columnId))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Переименовать колонку")
