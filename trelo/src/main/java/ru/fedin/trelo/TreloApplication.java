@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.fedin.trelo.mappers.DeskMapper;
 import ru.fedin.trelo.repositories.jpa.DeskRepository;
+import ru.fedin.trelo.repositories.jpa.DeskTaskRepository;
 
 @EnableJpaRepositories(basePackages = "ru.fedin.trelo.repositories.jpa")
 @SpringBootApplication
