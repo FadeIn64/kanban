@@ -1,6 +1,6 @@
 spring:
   application:
-    name: trelo
+    name: trelo_liquibase
 
 
   kafka:
@@ -14,4 +14,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: danila
     password: fedin
-    url: jdbc:postgresql://localhost:5432/trelo
+    url: jdbc:postgresql://localhost:5432/trelo_liquibase
+
+
+  liquibase:
+    enabled: true
+    driver-class-name: org.postgresql.Driver
