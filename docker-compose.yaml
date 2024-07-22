@@ -1,5 +1,7 @@
 version: '3.8'
 services:
+
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
     env_file:
@@ -8,6 +10,7 @@ services:
       - "22181:2181"
     networks:
       my_net:
+
   kafka:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
@@ -19,6 +22,8 @@ services:
       - docker/kafka.env
     networks:
       my_net:
+
+
   service-db:
     image: postgres:15-alpine3.19
     env_file:
@@ -37,9 +42,28 @@ services:
       - db-data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  minio:
+    image: minio/minio
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: "minioadmin"
+      MINIO_SECRET_KEY: "minioadmin"
+    volumes:
+      - minio_data:/data
+      - minio_certs:/certs
+      - minio_files:/file-storage
+
+    ports:
+      - "9000:9000"
+    networks:
+      - my_net
+
 
 volumes:
   db-data:
+  minio_data:
+  minio_certs:
+  minio_files:
 
 networks:
   my_net:
