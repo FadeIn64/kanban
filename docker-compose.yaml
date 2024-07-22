@@ -44,7 +44,7 @@ services:
 
   minio:
     image: minio/minio
-    command: server /data
+    command: server --console-address ":9001" /data
     environment:
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin"
@@ -52,9 +52,9 @@ services:
       - minio_data:/data
       - minio_certs:/certs
       - minio_files:/file-storage
-
     ports:
       - "9000:9000"
+      - "9001:9001"
     networks:
       - my_net
 
