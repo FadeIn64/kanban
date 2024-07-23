@@ -45,9 +45,8 @@ services:
   minio:
     image: minio/minio
     command: server --console-address ":9001" /data
-    environment:
-      MINIO_ACCESS_KEY: "minioadmin"
-      MINIO_SECRET_KEY: "minioadmin"
+    env_file:
+      - docker/minio.env
     volumes:
       - minio_data:/data
       - minio_certs:/certs
