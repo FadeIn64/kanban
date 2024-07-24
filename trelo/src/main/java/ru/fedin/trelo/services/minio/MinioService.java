@@ -55,13 +55,10 @@ public class MinioService {
             log.error("Happened error when upload file: ", e);
         }
         return FileDTO.builder()
-                .title(request.getTitle())
                 .description(request.getDescription())
                 .size(request.getFile().getSize())
-                .url(getPreSignedUrl(request.getFilename()))
                 .filename(request.getFilename())
                 .build();
-
 
     }
 
