@@ -28,3 +28,5 @@ minio:
     key: minioadmin
     secret: minioadmin
   url: http://localhost:9000
+
+file-root-url: "http://localhost:8080/files"
