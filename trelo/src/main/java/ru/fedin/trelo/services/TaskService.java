@@ -93,7 +93,7 @@ public class TaskService {
                 .endDate(dto.getEndDate())
                 .createDate(dto.getCreateDate())
                 .coast(dto.getCoast())
-                .file(opt.get().getFile())
+                .files(opt.get().getFiles())
                 .build();
 
         entity = taskRepository.save(entity);

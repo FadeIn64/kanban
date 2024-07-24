@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.fedin.trelo.dtos.minio.FileDTO;
 import ru.fedin.trelo.eintites.enums.Importance;
 
 import java.time.LocalDate;
@@ -33,6 +34,6 @@ public class DeskTaskDTO {
     private LocalDateTime endDate;
     private double coast;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String file;
+    private List<FileDTO> files;
 
 }

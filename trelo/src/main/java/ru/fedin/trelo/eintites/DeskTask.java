@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 import ru.fedin.trelo.eintites.enums.Importance;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +60,11 @@ public class DeskTask {
     @Column(name = "coast")
     private Double coast;
 
-    @Column(name = "file", length = Integer.MAX_VALUE)
-    private String file;
-
     @Formula("find_actual_column(id)")
-    Integer column;
+    private Integer column;
+
+    @OneToMany
+    @JoinColumn(name = "task")
+    private List<TaskFile> files;
 
 }
