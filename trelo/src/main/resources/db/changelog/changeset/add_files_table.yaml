@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_file_table
+      author: danila_fedin
+      changes:
+        - sqlFile:
+            path: db/changelog/scripts/add_files_table.sql
+            stripComments: true
+            splitStatements: true
+
+
+
+

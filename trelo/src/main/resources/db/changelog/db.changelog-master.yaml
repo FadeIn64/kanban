@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changeset/init.sql
   - include:
       file: db/changelog/changeset/init_procedures.sql
+  - include:
+      file: db/changelog/changeset/add_files_table.yaml
