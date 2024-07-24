@@ -23,8 +23,6 @@ public class FileDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 232836038145089522L;
 
-    private String title;
-
     private String description;
 
     @SuppressWarnings("java:S1948")
