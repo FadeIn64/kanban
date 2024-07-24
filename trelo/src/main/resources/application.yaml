@@ -20,3 +20,11 @@ spring:
   liquibase:
     enabled: true
     driver-class-name: org.postgresql.Driver
+
+minio:
+  bucket:
+    name: demo-test
+  access:
+    key: minioadmin
+    secret: minioadmin
+  url: http://localhost:9000
