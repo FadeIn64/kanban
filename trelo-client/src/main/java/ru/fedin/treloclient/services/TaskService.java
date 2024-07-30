@@ -4,8 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.dtos.requests.TaskPerformerReq;
+import ru.fedin.treloclient.dtos.response.DeskTaskRes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,29 +16,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskService {
 
-
+    private final RestClient restClient;
     private final HistoryService historyService;
 
 
-    @Transactional
-    public DeskTaskReq findById(int id){
 
-        return DeskTaskReq.builder().id(id).build();
+    public DeskTaskRes findById(int id){
+
+        var res = restClient.
+                get()
+                .uri("/task/"+id)
+                .retrieve()
+                .toEntity(DeskTaskRes.class);
+
+        var entity = res.getBody();
+
+        return entity;
     }
 
-    @Transactional
+
     public DeskTaskReq create(DeskTaskReq dto){
 
         return  dto;
     }
 
-    @Transactional
+
     public boolean changeColumn(Integer taskId, Integer newColumn){
 
         return true;
     }
 
-    @Transactional
+
     public DeskTaskReq change(DeskTaskReq dto){
 
 
@@ -44,19 +54,17 @@ public class TaskService {
         return dto;
     }
 
-    @Transactional
+
     public List<TaskPerformerReq> addPerformer(Integer taskId, String newContributor){
 
         return new ArrayList<>();
     }
 
-    @Transactional
     public List<TaskPerformerReq> removePerformer(Integer taskId, @NotNull String newContributor){
 
         return new ArrayList<>();
     }
 
-//    @Transactional
     public boolean removeTask(Integer id){
         try {
             return true;
