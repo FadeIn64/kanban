@@ -15,3 +15,5 @@ server:
 kafka:
   topic:
     desk: desk
+    column: column
+    task: task
