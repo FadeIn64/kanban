@@ -1,4 +1,4 @@
-package ru.fedin.treloclient.dtos;
+package ru.fedin.treloclient.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -14,26 +14,26 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class DeskTaskDTO {
+public class DeskTaskRes {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     private Integer id;
     private Integer desk;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     private Integer column;
     private String header;
     private String description;
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<TaskPerformerDTO> performers;
+
+    private List<TaskPerformerRes> performers;
     private Importance importance;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     private LocalDateTime createDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private double coast;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<FileDTO> files;
+
+    private List<FileRes> files;
 
 }

@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fedin.treloclient.dtos.DeskTaskDTO;
+import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.services.HistoryService;
 import ru.fedin.treloclient.services.TaskService;
 
@@ -37,7 +37,7 @@ public class TaskController {
 
     @Operation(summary = "Создать задачу")
     @PostMapping
-    ResponseEntity createTask(@RequestBody DeskTaskDTO task){
+    ResponseEntity createTask(@RequestBody DeskTaskReq task){
         task = taskService.create(task);
         return new ResponseEntity<>(
                 task,
@@ -56,7 +56,7 @@ public class TaskController {
 
     @Operation(summary = "Редактировать задачу")
     @PutMapping("/{taskId}")
-    ResponseEntity changeTask(@RequestBody DeskTaskDTO task, @PathVariable Integer taskId){
+    ResponseEntity changeTask(@RequestBody DeskTaskReq task, @PathVariable Integer taskId){
         task.setId(taskId);
         task = taskService.change(task);
 

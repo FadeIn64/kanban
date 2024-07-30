@@ -1,36 +1,39 @@
-package ru.fedin.treloclient.dtos;
+package ru.fedin.treloclient.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.fedin.treloclient.dtos.enums.Importance;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class DeskDTO {
+public class DeskTaskReq {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer id;
-
-    private String name;
-
+    private Integer desk;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer column;
+    private String header;
+    private String description;
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<DeskColumnDTO> deskColumns = new ArrayList<>();
-
+    private List<TaskPerformerReq> performers;
+    private Importance importance;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<DeskContributorDTO> deskContributors = new ArrayList<>();
-
+    private LocalDateTime createDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private double coast;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<DeskTaskDTO> deskTasks = new ArrayList<>();
-
+    private List<FileReq> files;
 
 }

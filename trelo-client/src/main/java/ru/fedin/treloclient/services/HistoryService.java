@@ -3,8 +3,8 @@ package ru.fedin.treloclient.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fedin.treloclient.dtos.DeskTaskDTO;
-import ru.fedin.treloclient.dtos.TaskHistoryDTO;
+import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
+import ru.fedin.treloclient.dtos.requests.TaskHistoryReq;
 
 
 import java.time.LocalDateTime;
@@ -17,18 +17,18 @@ public class HistoryService {
 
 
     @Transactional
-    public DeskTaskDTO changeColumn(DeskTaskDTO task, Integer newColumnId){
+    public DeskTaskReq changeColumn(DeskTaskReq task, Integer newColumnId){
 
         return task;
     }
 
     @Transactional
-    public List<TaskHistoryDTO> findAllByTask(Integer taskId){
+    public List<TaskHistoryReq> findAllByTask(Integer taskId){
         return new ArrayList<>();
     }
 
     @Transactional
-    public List<TaskHistoryDTO> findAllByTaskAndChangeDate(Integer taskId,
+    public List<TaskHistoryReq> findAllByTaskAndChangeDate(Integer taskId,
                                                            LocalDateTime changeDate,
                                                            LocalDateTime changeDate2){
         return new ArrayList<>();

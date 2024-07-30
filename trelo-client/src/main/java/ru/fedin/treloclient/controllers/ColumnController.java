@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fedin.treloclient.dtos.DeskColumnDTO;
+import ru.fedin.treloclient.dtos.requests.DeskColumnReq;
 import ru.fedin.treloclient.services.ColumnService;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -24,7 +24,7 @@ public class ColumnController {
     @Operation(summary = "Создать колонку",
                 description = "Добавляет колонку в конец")
     @PostMapping
-    ResponseEntity create(@RequestBody DeskColumnDTO column){
+    ResponseEntity create(@RequestBody DeskColumnReq column){
         column = columnService.create(column);
         return new ResponseEntity<>(column,
                 HttpStatus.CREATED);

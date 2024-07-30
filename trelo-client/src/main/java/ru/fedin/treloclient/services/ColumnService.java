@@ -3,12 +3,10 @@ package ru.fedin.treloclient.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fedin.treloclient.dtos.DeskColumnDTO;
+import ru.fedin.treloclient.dtos.requests.DeskColumnReq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -17,24 +15,24 @@ public class ColumnService {
 
 
 
-    public DeskColumnDTO findById(Integer id){
+    public DeskColumnReq findById(Integer id){
 
-        return DeskColumnDTO.builder().id(id).build();
+        return DeskColumnReq.builder().id(id).build();
     }
 
     @Transactional
-    public DeskColumnDTO create(DeskColumnDTO dto){
+    public DeskColumnReq create(DeskColumnReq dto){
 
         return dto;
     }
 
     @Transactional
-    public DeskColumnDTO rename(Integer id, String newName){
-       return DeskColumnDTO.builder().id(id).build();
+    public DeskColumnReq rename(Integer id, String newName){
+       return DeskColumnReq.builder().id(id).build();
     }
 
     @Transactional
-    public List<DeskColumnDTO> move(Integer id, int offset){
+    public List<DeskColumnReq> move(Integer id, int offset){
 
         return new ArrayList<>();
 

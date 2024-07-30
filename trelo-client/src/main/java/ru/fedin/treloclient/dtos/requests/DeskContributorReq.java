@@ -1,4 +1,4 @@
-package ru.fedin.treloclient.dtos;
+package ru.fedin.treloclient.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeskContributorDTO {
+public class DeskContributorReq {
 
     @JsonIgnore
     private Integer id;

@@ -1,4 +1,4 @@
-package ru.fedin.treloclient.dtos;
+package ru.fedin.treloclient.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,13 +8,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TaskPerformerDTO {
+public class TaskPerformerReq {
     @JsonIgnore
     private Integer id;
 
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private DeskContributorDTO contributor;
+    private DeskContributorReq contributor;
 
     @NotNull
     @JsonIgnore

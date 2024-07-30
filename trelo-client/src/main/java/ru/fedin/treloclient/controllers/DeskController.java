@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fedin.treloclient.dtos.DeskDTO;
+import ru.fedin.treloclient.dtos.requests.DeskReq;
 import ru.fedin.treloclient.services.DeskService;
 
 @RestController
@@ -30,7 +30,7 @@ public class DeskController {
     @Operation(summary = "Создать доску",
             description = "Возвращает новую доску, включая всю информацию о колонках, задачах, участников.")
     @PostMapping
-    ResponseEntity createDesk(@RequestBody DeskDTO desk){
+    ResponseEntity createDesk(@RequestBody DeskReq desk){
 
         try {
             desk = deskService.create(desk);
