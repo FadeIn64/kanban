@@ -11,3 +11,7 @@ client:
 
 server:
   port: 8081
+
+kafka:
+  topic:
+    desk: desk

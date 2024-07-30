@@ -30,3 +30,7 @@ minio:
   url: http://localhost:9000
 
 file-root-url: "http://localhost:8080/files"
+
+kafka:
+  topic:
+    desk: desk
