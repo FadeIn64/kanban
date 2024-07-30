@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: trelo_client
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+client:
+  server:
+    root-uri: http://localhost:8080
+
+server:
+  port: 8081
