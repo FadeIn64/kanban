@@ -2,8 +2,9 @@ package ru.fedin.treloclient.mappers;
 
 import org.mapstruct.Mapper;
 import ru.fedin.treloclient.dtos.requests.DeskColumnReq;
+import ru.fedin.treloclient.dtos.response.DeskColumnRes;
 import ru.fedin.treloclient.dtos.response.DeskRes;
 
 @Mapper(componentModel = "spring")
-public interface ColumnMapper extends DataMapper<DeskRes, DeskColumnReq> {
+public interface ColumnMapper extends DataMapper<DeskColumnRes, DeskColumnReq> {
 }
