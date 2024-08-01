@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.fedin.treloclient.dtos.requests.DeskColumnReq;
 import ru.fedin.treloclient.services.ColumnService;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/column")
@@ -25,16 +24,16 @@ public class ColumnController {
                 description = "Добавляет колонку в конец")
     @PostMapping
     ResponseEntity create(@RequestBody DeskColumnReq column){
-        column = columnService.create(column);
-        return new ResponseEntity<>(column,
-                HttpStatus.CREATED);
+        if (columnService.create(column))
+            return new ResponseEntity<>(CREATED);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Найти колонку по id")
     @GetMapping("/{columnId}")
     ResponseEntity getColumn(@PathVariable int columnId){
         var column = columnService.findById(columnId);
-        if (column.getId() == null)
+        if (column.getId() == 0)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(column, HttpStatus.OK);
     }
@@ -50,11 +49,12 @@ public class ColumnController {
 
     @Operation(summary = "Переименовать колонку")
     @PutMapping("/{columnId}")
-    HttpStatus renameColumn(@PathVariable int columnId,
+    ResponseEntity renameColumn(@PathVariable int columnId,
                             @RequestBody
                             @Parameter(description = "Новое имя") String newName){
-        var column = columnService.rename(columnId, newName);
-        return HttpStatus.ACCEPTED;
+        if (columnService.rename(columnId, newName))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "передвинуть колонку")
@@ -62,10 +62,9 @@ public class ColumnController {
     ResponseEntity moveColumn(@PathVariable int columnId,
                           @Parameter(description = "Смещение колнки. Значения меньше 0 двигуют уолонку к предыдущим, большее - к следующим")
                           @RequestParam int offset){
-        var columns = columnService.move(columnId, offset);
-        if (columns.size() == 0)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return ResponseEntity.ok(columns);
+        if (columnService.move(columnId, offset))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
 }
