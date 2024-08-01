@@ -36,6 +36,10 @@ public class DeskListener {
         }
 
         var dto = deskService.findById(desk.getId());
+
+        if (dto.getId() == 0)
+            return;
+
         if (!dto.getName().equals(desk.getName())){
             desk = deskMapper.toEntity(deskService.rename(desk.getId(), desk.getName()));
             return;
