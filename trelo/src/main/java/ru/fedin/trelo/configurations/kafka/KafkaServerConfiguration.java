@@ -12,9 +12,10 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.fedin.trelo.dtos.DeskColumnDTO;
-import ru.fedin.trelo.dtos.DeskDTO;
-import ru.fedin.trelo.dtos.DeskTaskDTO;
+import ru.fedin.trelo.dtos.kafka.DeskColumnRes;
+import ru.fedin.trelo.dtos.kafka.DeskRes;
+import ru.fedin.trelo.dtos.kafka.DeskTaskRes;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,22 +41,22 @@ public class KafkaServerConfiguration {
                     .build();
         }
 
-        private ConsumerFactory<UUID, DeskDTO> deskConsumerFactory() {
+        private ConsumerFactory<UUID, DeskRes> deskConsumerFactory() {
             Map<String, Object> props = new HashMap<>();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             return new DefaultKafkaConsumerFactory<>(props, new UUIDDeserializer(), jsonDeserializer());
         }
 
-        private JsonDeserializer<DeskDTO> jsonDeserializer(){
-            JsonDeserializer<DeskDTO> deserializer = new JsonDeserializer<>(DeskDTO.class);
+        private JsonDeserializer<DeskRes> jsonDeserializer(){
+            JsonDeserializer<DeskRes> deserializer = new JsonDeserializer<>(DeskRes.class);
             deserializer.addTrustedPackages("*");
             deserializer.ignoreTypeHeaders();
             return deserializer;
         }
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, DeskDTO> deskKafkaListenerContainerFactory() {
-            ConcurrentKafkaListenerContainerFactory<UUID, DeskDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        public ConcurrentKafkaListenerContainerFactory<UUID, DeskRes> deskKafkaListenerContainerFactory() {
+            ConcurrentKafkaListenerContainerFactory<UUID, DeskRes> factory = new ConcurrentKafkaListenerContainerFactory<>();
             factory.setConsumerFactory(deskConsumerFactory());
             return factory;
         }
@@ -75,22 +76,22 @@ public class KafkaServerConfiguration {
                     .build();
         }
 
-        private ConsumerFactory<UUID, DeskColumnDTO> columnConsumerFactory() {
+        private ConsumerFactory<UUID, DeskColumnRes> columnConsumerFactory() {
             Map<String, Object> props = new HashMap<>();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             return new DefaultKafkaConsumerFactory<>(props, new UUIDDeserializer(), jsonDeserializer());
         }
 
-        private JsonDeserializer<DeskColumnDTO> jsonDeserializer(){
-            JsonDeserializer<DeskColumnDTO> deserializer = new JsonDeserializer<>(DeskColumnDTO.class);
+        private JsonDeserializer<DeskColumnRes> jsonDeserializer(){
+            JsonDeserializer<DeskColumnRes> deserializer = new JsonDeserializer<>(DeskColumnRes.class);
             deserializer.addTrustedPackages("*");
             deserializer.ignoreTypeHeaders();
             return deserializer;
         }
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, DeskColumnDTO> columnKafkaListenerContainerFactory() {
-            ConcurrentKafkaListenerContainerFactory<UUID, DeskColumnDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        public ConcurrentKafkaListenerContainerFactory<UUID, DeskColumnRes> columnKafkaListenerContainerFactory() {
+            ConcurrentKafkaListenerContainerFactory<UUID, DeskColumnRes> factory = new ConcurrentKafkaListenerContainerFactory<>();
             factory.setConsumerFactory(columnConsumerFactory());
             return factory;
         }
@@ -110,22 +111,22 @@ public class KafkaServerConfiguration {
                     .build();
         }
 
-        private ConsumerFactory<UUID, DeskTaskDTO> taskConsumerFactory() {
+        private ConsumerFactory<UUID, DeskTaskRes> taskConsumerFactory() {
             Map<String, Object> props = new HashMap<>();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             return new DefaultKafkaConsumerFactory<>(props, new UUIDDeserializer(), jsonDeserializer());
         }
 
-        private JsonDeserializer<DeskTaskDTO> jsonDeserializer(){
-            JsonDeserializer<DeskTaskDTO> deserializer = new JsonDeserializer<>(DeskTaskDTO.class);
+        private JsonDeserializer<DeskTaskRes> jsonDeserializer(){
+            JsonDeserializer<DeskTaskRes> deserializer = new JsonDeserializer<>(DeskTaskRes.class);
             deserializer.addTrustedPackages("*");
             deserializer.ignoreTypeHeaders();
             return deserializer;
         }
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, DeskTaskDTO> taskKafkaListenerContainerFactory() {
-            ConcurrentKafkaListenerContainerFactory<UUID, DeskTaskDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        public ConcurrentKafkaListenerContainerFactory<UUID, DeskTaskRes> taskKafkaListenerContainerFactory() {
+            ConcurrentKafkaListenerContainerFactory<UUID, DeskTaskRes> factory = new ConcurrentKafkaListenerContainerFactory<>();
             factory.setConsumerFactory(taskConsumerFactory());
             return factory;
         }
