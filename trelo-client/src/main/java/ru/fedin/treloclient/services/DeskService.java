@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.dtos.requests.DeskContributorReq;
 import ru.fedin.treloclient.dtos.requests.DeskReq;
+import ru.fedin.treloclient.dtos.response.DeskContributorRes;
 import ru.fedin.treloclient.dtos.response.DeskRes;
+import ru.fedin.treloclient.mappers.DeskMapper;
 
 
 import java.util.ArrayList;
@@ -24,44 +26,95 @@ public class DeskService {
 
     private final RestClient restClient;
     private final KafkaTemplate<UUID, DeskReq> deskTemplate;
+    private final DeskMapper mapper;
     @Value("${kafka.topic.desk}")
     private String deskTopic;
 
 
 
     public DeskRes findById(int id){
-        ResponseEntity<DeskRes> res = restClient.get()
-                .uri("/desk/"+id).retrieve().toEntity(DeskRes.class);
-        var entity = res.getBody();
-        return entity;
+        try {
+            ResponseEntity<DeskRes> res = restClient.get()
+                    .uri("/desk/"+id).retrieve().toEntity(DeskRes.class);
+            var entity = res.getBody();
+            return entity;
+        }
+        catch (Exception e){
+            return DeskRes.builder().id(0).build();
+        }
     }
 
 
-    public DeskReq create(DeskReq dto){
+    public boolean create(DeskReq dto){
+
+        if ("".equals(dto.getName()) || "".equals(dto.getAuthor()))
+            return false;
+
         var uuid = Generators.timeBasedGenerator().generate();
         deskTemplate.send(deskTopic, uuid, dto);
-        return dto;
+        return true;
     }
 
 
-    public void delete(Integer id){
+    public boolean delete(Integer id){
+        DeskRes desk = this.findById(id);
 
+        if (desk.getId().equals(0))
+            return false;
+
+        desk.setName("");
+        deskTemplate.send(deskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(desk));
+
+        return true;
     }
 
 
-    public DeskReq rename(Integer deskId, String newName){
+    public boolean rename(Integer deskId, String newName){
 
-        return DeskReq.builder().id(deskId).build();
+        if ("".equals(newName))
+            return false;
+
+        DeskRes desk = this.findById(deskId);
+
+        if (desk.getId().equals(0))
+            return false;
+
+        desk.setName(newName);
+        deskTemplate.send(deskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(desk));
+
+        return true;
     }
 
 
-    public List<DeskContributorReq> addContributor(int deskId, String user){
+    public boolean addContributor(int deskId, String user){
 
-        return new ArrayList<>();
+        DeskRes desk = this.findById(deskId);
+
+        if (desk.getId().equals(0))
+            return false;
+
+        desk.getDeskContributors().add(DeskContributorRes.builder().contributor(user).build());
+
+        deskTemplate.send(deskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(desk));
+
+        return true;
     }
 
 
     public boolean removeContributor(int deskId, String user){
+
+        DeskRes desk = this.findById(deskId);
+
+        if (desk.getId().equals(0))
+            return false;
+
+        desk.setDeskContributors(
+                desk.getDeskContributors().stream()
+                        .filter(c -> !c.getContributor().equals(user))
+                        .toList()
+        );
+
+        deskTemplate.send(deskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(desk));
 
         return true;
     }

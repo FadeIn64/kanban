@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import ru.fedin.trelo.dtos.DeskContributorDTO;
 import ru.fedin.trelo.dtos.DeskDTO;
+import ru.fedin.trelo.dtos.kafka.DeskContributorRes;
+import ru.fedin.trelo.dtos.kafka.DeskRes;
+import ru.fedin.trelo.mappers.kafka.DeskMapperKafka;
 import ru.fedin.trelo.services.DeskService;
 
 import java.util.UUID;
@@ -15,14 +19,44 @@ import java.util.UUID;
 public class DeskListener {
 
     private final DeskService deskService;
+    private final DeskMapperKafka deskMapper;
 
     @KafkaListener(topics = "${kafka.topic.desk}",
                     groupId = "server",
                     containerFactory = "deskKafkaListenerContainerFactory")
-    void listener(DeskDTO dto){
-        if (dto.getId() == null){
-            dto = deskService.create(dto);
+    void listener( DeskRes desk){
+        if (desk.getId() == null){
+            desk = deskMapper.toEntity(deskService.create(deskMapper.toDto(desk)));
+            return;
         }
+
+        if (desk.getName().equals("")){
+            deskService.delete(desk.getId());
+            return;
+        }
+
+        var dto = deskService.findById(desk.getId());
+        if (!dto.getName().equals(desk.getName())){
+            desk = deskMapper.toEntity(deskService.rename(desk.getId(), desk.getName()));
+            return;
+        }
+
+        var newContrs = desk.getDeskContributors().stream()
+                .map(DeskContributorRes::getContributor)
+                .toList();
+        var oldContrs = dto.getDeskContributors().stream()
+                .map(DeskContributorDTO::getContributor)
+                .toList();
+
+        //Добавляем новых участников
+        newContrs.stream()
+                .filter(contr -> !oldContrs.contains(contr))
+                .forEach(contr -> deskService.addContributor(dto.getId(), contr));
+
+        //Удаляем старых участников
+        oldContrs.stream()
+                .filter(contr -> !newContrs.contains(contr))
+                .forEach(contr -> deskService.removeContributor(dto.getId(), contr));
     }
 
 }
