@@ -25,8 +25,8 @@ public class FileRes implements Serializable {
 
     private String description;
 
-    @SuppressWarnings("java:S1948")
-    private MultipartFile file;
+//    @SuppressWarnings("java:S1948")
+//    private MultipartFile file;
 
     private String url;
 
