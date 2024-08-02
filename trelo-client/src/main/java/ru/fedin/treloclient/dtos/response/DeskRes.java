@@ -1,12 +1,15 @@
 package ru.fedin.treloclient.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,6 @@ public class DeskRes {
 
     private String name;
 
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
 
     private List<DeskColumnRes> deskColumns = new ArrayList<>();
@@ -32,5 +34,8 @@ public class DeskRes {
 
     private List<DeskTaskRes> deskTasks = new ArrayList<>();
 
-
+    @TimeToLive
+    @JsonIgnore
+    @Value("${spring.data.redis.time-to-live}")
+    private long ttl;
 }
