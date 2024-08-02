@@ -1,8 +1,10 @@
 package ru.fedin.trelo.listeners;
 
+import com.fasterxml.uuid.Generators;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelo.dtos.DeskContributorDTO;
 import ru.fedin.trelo.dtos.DeskDTO;
@@ -20,6 +22,8 @@ public class DeskListener {
 
     private final DeskService deskService;
     private final DeskMapperKafka deskMapper;
+    private final KafkaTemplate<UUID, DeskRes> replyDeskTemplate;
+    private final String replyDeskTopic;
 
     @KafkaListener(topics = "${kafka.topic.desk}",
                     groupId = "server",
@@ -27,11 +31,13 @@ public class DeskListener {
     void listener( DeskRes desk){
         if (desk.getId() == null){
             desk = deskMapper.toEntity(deskService.create(deskMapper.toDto(desk)));
+            send(desk);
             return;
         }
 
         if (desk.getName().equals("")){
             deskService.delete(desk.getId());
+            send(desk);
             return;
         }
 
@@ -42,6 +48,7 @@ public class DeskListener {
 
         if (!dto.getName().equals(desk.getName())){
             desk = deskMapper.toEntity(deskService.rename(desk.getId(), desk.getName()));
+            send(desk);
             return;
         }
 
@@ -61,6 +68,11 @@ public class DeskListener {
         oldContrs.stream()
                 .filter(contr -> !newContrs.contains(contr))
                 .forEach(contr -> deskService.removeContributor(dto.getId(), contr));
+        send(desk);
+    }
+
+    private void send(DeskRes desk){
+        replyDeskTemplate.send(replyDeskTopic, Generators.timeBasedGenerator().generate(), desk);
     }
 
 }
