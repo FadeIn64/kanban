@@ -19,6 +19,8 @@ public class TaskListener {
             containerFactory = "replyTaskKafkaListenerContainerFactory")
     void listener( DeskTaskRes task){
         log.info("Task: {}", task);
+        if (task.getId() == null)
+            return;
         if ("".equals(task.getHeader())){
             cacheService.delete(task.getId());
         }

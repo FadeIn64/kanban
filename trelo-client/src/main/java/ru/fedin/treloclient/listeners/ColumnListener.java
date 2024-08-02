@@ -20,6 +20,8 @@ public class ColumnListener {
             containerFactory = "replyColumnKafkaListenerContainerFactory")
     void listener(DeskColumnRes column){
         log.info("Reply message column: {}", column);
+        if (column.getId() == null)
+            return;
         if ("".equals(column.getName())){
             cacheService.delete(column.getId());
             return;

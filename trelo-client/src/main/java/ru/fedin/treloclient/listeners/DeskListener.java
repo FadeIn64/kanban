@@ -19,6 +19,8 @@ public class DeskListener {
                     containerFactory = "replyDeskKafkaListenerContainerFactory")
     void listener( DeskRes desk){
         log.info("Desk: {}", desk);
+        if (desk.getId() == null)
+            return;
         if ("".equals(desk.getName())){
             cacheService.delete(desk.getId());
             return;
