@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import ru.fedin.treloclient.cache.ColumnCacheService;
 import ru.fedin.treloclient.dtos.response.DeskColumnRes;
 
 @Component
@@ -11,7 +12,7 @@ import ru.fedin.treloclient.dtos.response.DeskColumnRes;
 @Slf4j
 public class ColumnListener {
 
-
+    private final ColumnCacheService cacheService;
 
 
     @KafkaListener(topics = "#{replyColumnTopic}",
@@ -19,6 +20,11 @@ public class ColumnListener {
             containerFactory = "replyColumnKafkaListenerContainerFactory")
     void listener(DeskColumnRes column){
         log.info("Reply message column: {}", column);
+        if ("".equals(column.getName())){
+            cacheService.delete(column.getId());
+            return;
+        }
+        cacheService.save(column);
     }
 
 }
