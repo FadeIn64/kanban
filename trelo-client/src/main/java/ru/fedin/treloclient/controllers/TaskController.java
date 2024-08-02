@@ -12,7 +12,6 @@ import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.services.HistoryService;
 import ru.fedin.treloclient.services.TaskService;
 
-
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpStatus.*;
@@ -38,11 +37,9 @@ public class TaskController {
     @Operation(summary = "Создать задачу")
     @PostMapping
     ResponseEntity createTask(@RequestBody DeskTaskReq task){
-        task = taskService.create(task);
-        return new ResponseEntity<>(
-                task,
-                CREATED
-        );
+        if (taskService.create(task))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Удалить задачу",
@@ -58,15 +55,9 @@ public class TaskController {
     @PutMapping("/{taskId}")
     ResponseEntity changeTask(@RequestBody DeskTaskReq task, @PathVariable Integer taskId){
         task.setId(taskId);
-        task = taskService.change(task);
-
-        if (task.getId() == 0)
-            return new ResponseEntity(BAD_REQUEST);
-
-        return new ResponseEntity<>(
-                task,
-                OK
-        );
+        if (taskService.change(task))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Добавить Исполнителя",
@@ -75,10 +66,9 @@ public class TaskController {
     ResponseEntity addPerformer(@PathVariable int taskId,
                                 @RequestBody
                                 @Parameter(description = "Новый исполнитель") String performer){
-        var performers = taskService.addPerformer(taskId, performer);
-        if (performers.isEmpty())
-            return new ResponseEntity<>(BAD_REQUEST);
-        return new ResponseEntity<>(performers, HttpStatus.ACCEPTED);
+        if (taskService.addPerformer(taskId, performer))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Удалить Исполнителя",
@@ -87,10 +77,9 @@ public class TaskController {
     ResponseEntity removePerformer(@PathVariable int taskId,
                                 @RequestBody
                                 @Parameter(description = "Исполнитель") String performer){
-        var performers = taskService.removePerformer(taskId, performer);
-        if (performers.isEmpty())
-            return new ResponseEntity<>(BAD_REQUEST);
-        return new ResponseEntity<>(performers, HttpStatus.ACCEPTED);
+        if (taskService.removePerformer(taskId, performer))
+            return new ResponseEntity<>(OK);
+        return new ResponseEntity<>(BAD_REQUEST);
     }
 
     @Operation(summary = "Изменить колнку для задачи")

@@ -1,77 +1,131 @@
 package ru.fedin.treloclient.services;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.dtos.requests.TaskPerformerReq;
+import ru.fedin.treloclient.dtos.response.DeskContributorRes;
 import ru.fedin.treloclient.dtos.response.DeskTaskRes;
+import ru.fedin.treloclient.dtos.response.TaskPerformerRes;
+import ru.fedin.treloclient.mappers.TaskMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
     private final RestClient restClient;
-    private final HistoryService historyService;
+    private final TaskMapper mapper;
+    private final KafkaTemplate<UUID, DeskTaskReq> taskTemplate;
+    @Value("${kafka.topic.task}")
+    private String taskTopic;
 
 
 
     public DeskTaskRes findById(int id){
 
-        var res = restClient.
-                get()
-                .uri("/task/"+id)
-                .retrieve()
-                .toEntity(DeskTaskRes.class);
+        try {
+            var res = restClient.
+                    get()
+                    .uri("/task/"+id)
+                    .retrieve()
+                    .toEntity(DeskTaskRes.class);
 
-        var entity = res.getBody();
+            var entity = res.getBody();
 
-        return entity;
+            return entity;
+        }catch (Exception e){
+            return DeskTaskRes.builder().id(0).build();
+        }
+
+
     }
 
 
-    public DeskTaskReq create(DeskTaskReq dto){
+    public boolean create(DeskTaskReq dto){
+        if ("".equals(dto.getHeader()) || "".equals(dto.getAuthor()))
+             return false;
 
-        return  dto;
+        dto.setId(0);
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), dto);
+        return true;
     }
 
 
     public boolean changeColumn(Integer taskId, Integer newColumn){
 
+        var task = this.findById(taskId);
+        if (task.getId() == 0)
+            return false;
+
+        task.setColumn(newColumn);
+
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
         return true;
     }
 
 
-    public DeskTaskReq change(DeskTaskReq dto){
+    public boolean change(DeskTaskReq dto){
+
+        if ("".equals(dto.getHeader()) || "".equals(dto.getAuthor()))
+            return false;
+
+        var task = this.findById(dto.getId());
+        if (task.getId() == 0)
+            return false;
 
 
-
-        return dto;
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), dto);
+        return true;
     }
 
 
-    public List<TaskPerformerReq> addPerformer(Integer taskId, String newContributor){
+    public boolean addPerformer(Integer taskId, String newContributor){
+        var task = this.findById(taskId);
+        if (task.getId() == 0)
+            return false;
 
-        return new ArrayList<>();
+        System.out.println(task.getDesk());
+
+       var contr = DeskContributorRes.builder().contributor(newContributor).desk(task.getDesk()).build();
+       var performer = TaskPerformerRes.builder().contributor(contr).task(taskId).build();
+       task.getPerformers().add(performer);
+
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
+        return true;
     }
 
-    public List<TaskPerformerReq> removePerformer(Integer taskId, @NotNull String newContributor){
+    public boolean removePerformer(Integer taskId, @NotNull String oldContributor){
+        var task = this.findById(taskId);
+        if (task.getId() == 0)
+            return false;
 
-        return new ArrayList<>();
+        task.setPerformers(task.getPerformers().stream()
+                .filter(p -> !p.getContributor().getContributor().equals(oldContributor))
+                .toList());
+
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
+        return true;
     }
 
     public boolean removeTask(Integer id){
-        try {
-            return true;
-        }
-        catch (Exception e){
+        var task = this.findById(id);
+        if (task.getId() == 0)
             return false;
-        }
+
+        task.setHeader("");
+
+        taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
+        return true;
     }
 
 }
