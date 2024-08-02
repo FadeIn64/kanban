@@ -9,6 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import ru.fedin.treloclient.cache.DeskCacheService;
 import ru.fedin.treloclient.dtos.requests.DeskContributorReq;
 import ru.fedin.treloclient.dtos.requests.DeskReq;
 import ru.fedin.treloclient.dtos.response.DeskContributorRes;
@@ -29,14 +30,18 @@ public class DeskService {
     private final DeskMapper mapper;
     @Value("${kafka.topic.desk}")
     private String deskTopic;
-
+    private final DeskCacheService cacheService;
 
 
     public DeskRes findById(int id){
+        var opt = cacheService.findById(id);
+        if (opt.isPresent())
+            return opt.get();
         try {
             ResponseEntity<DeskRes> res = restClient.get()
                     .uri("/desk/"+id).retrieve().toEntity(DeskRes.class);
             var entity = res.getBody();
+            cacheService.save(entity);
             return entity;
         }
         catch (Exception e){

@@ -7,6 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import ru.fedin.treloclient.cache.ColumnCacheService;
 import ru.fedin.treloclient.dtos.requests.DeskColumnReq;
 import ru.fedin.treloclient.dtos.response.DeskColumnRes;
 import ru.fedin.treloclient.mappers.ColumnMapper;
@@ -25,11 +26,14 @@ public class ColumnService {
     private final ColumnMapper mapper;
     @Value("${kafka.topic.column}")
     private String columnTopic;
+    private final ColumnCacheService cacheService;
 
 
 
     public DeskColumnRes findById(Integer id){
-
+        var opt = cacheService.findById(id);
+        if (opt.isPresent())
+            return opt.get();
         try {
             var res = restClient
                     .get()
@@ -38,7 +42,7 @@ public class ColumnService {
                     .toEntity(DeskColumnRes.class);
 
             var entity = res.getBody();
-
+            cacheService.save(entity);
             return entity;
         }
         catch (Exception e){

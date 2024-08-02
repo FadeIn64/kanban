@@ -8,6 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import ru.fedin.treloclient.cache.TaskCacheService;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.dtos.requests.TaskPerformerReq;
 import ru.fedin.treloclient.dtos.response.DeskContributorRes;
@@ -28,10 +29,14 @@ public class TaskService {
     private final KafkaTemplate<UUID, DeskTaskReq> taskTemplate;
     @Value("${kafka.topic.task}")
     private String taskTopic;
+    private final TaskCacheService cacheService;
 
 
 
     public DeskTaskRes findById(int id){
+        var opt = cacheService.findById(id);
+        if (opt.isPresent())
+            return opt.get();
 
         try {
             var res = restClient.
@@ -41,7 +46,7 @@ public class TaskService {
                     .toEntity(DeskTaskRes.class);
 
             var entity = res.getBody();
-
+            cacheService.save(entity);
             return entity;
         }catch (Exception e){
             return DeskTaskRes.builder().id(0).build();
