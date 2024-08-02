@@ -55,6 +55,11 @@ public class TaskListener {
             return;
         }
 
+        if (task.getPerformers() == null)
+            task.setPerformers(new ArrayList<>());
+        if (dto.getPerformers() == null)
+            dto.setPerformers(new ArrayList<>());
+
         var newContrs = task.getPerformers().stream()
                 .map(p -> p.getContributor().getContributor())
                 .toList();
