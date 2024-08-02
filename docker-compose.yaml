@@ -57,6 +57,12 @@ services:
     networks:
       - my_net
 
+  cache:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    env_file:
+      - docker/redis.env
 
 volumes:
   db-data:
