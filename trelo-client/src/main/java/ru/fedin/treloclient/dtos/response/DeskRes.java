@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
+@RedisHash("Desk")
 public class DeskRes {
 
+    @Id
     private Integer id;
 
     private String name;

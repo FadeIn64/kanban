@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 import ru.fedin.treloclient.dtos.enums.Importance;
 
 import java.time.LocalDateTime;
@@ -15,9 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
+@RedisHash("Task")
 public class DeskTaskRes {
-
-
+    @Id
     private Integer id;
     private Integer desk;
 
