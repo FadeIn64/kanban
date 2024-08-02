@@ -5,6 +5,10 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
 
+  data:
+    redis:
+      url: redis://localhost:6379
+
 client:
   server:
     root-uri: http://localhost:8080
