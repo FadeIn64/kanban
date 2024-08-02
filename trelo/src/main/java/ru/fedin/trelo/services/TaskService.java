@@ -91,7 +91,7 @@ public class TaskService {
                 .importance(dto.getImportance())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
-                .createDate(dto.getCreateDate())
+                .createDate(opt.get().getCreateDate())
                 .coast(dto.getCoast())
                 .files(opt.get().getFiles())
                 .build();
