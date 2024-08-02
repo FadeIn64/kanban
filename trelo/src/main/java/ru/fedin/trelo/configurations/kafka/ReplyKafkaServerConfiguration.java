@@ -11,9 +11,10 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.fedin.trelo.dtos.DeskColumnDTO;
-import ru.fedin.trelo.dtos.DeskDTO;
-import ru.fedin.trelo.dtos.DeskTaskDTO;
+import ru.fedin.trelo.dtos.kafka.DeskColumnRes;
+import ru.fedin.trelo.dtos.kafka.DeskRes;
+import ru.fedin.trelo.dtos.kafka.DeskTaskRes;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class ReplyKafkaServerConfiguration {
                     .build();
         }
 
-        public ProducerFactory<UUID, DeskDTO> deskProducerFactory() {
+        public ProducerFactory<UUID, DeskRes> deskProducerFactory() {
             Map<String, Object> configProps = new HashMap<>();
             configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
@@ -52,7 +53,7 @@ public class ReplyKafkaServerConfiguration {
         }
 
         @Bean("ReplyDeskTemplate")
-        public KafkaTemplate<UUID, DeskDTO> replyDeskKafkaTemplate() {
+        public KafkaTemplate<UUID, DeskRes> replyDeskKafkaTemplate() {
             return new KafkaTemplate<>(deskProducerFactory());
         }
 
@@ -76,7 +77,7 @@ public class ReplyKafkaServerConfiguration {
                     .build();
         }
 
-        public ProducerFactory<UUID, DeskColumnDTO> columnProducerFactory() {
+        public ProducerFactory<UUID, DeskColumnRes> columnProducerFactory() {
             Map<String, Object> configProps = new HashMap<>();
             configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
@@ -85,7 +86,7 @@ public class ReplyKafkaServerConfiguration {
         }
 
         @Bean("ReplyColumnTemplate")
-        public KafkaTemplate<UUID, DeskColumnDTO> replyColumnkKafkaTemplate() {
+        public KafkaTemplate<UUID, DeskColumnRes> replyColumnKafkaTemplate() {
             return new KafkaTemplate<>(columnProducerFactory());
         }
     }
@@ -108,7 +109,7 @@ public class ReplyKafkaServerConfiguration {
                     .build();
         }
 
-        public ProducerFactory<UUID, DeskTaskDTO> taskProducerFactory() {
+        public ProducerFactory<UUID, DeskTaskRes> taskProducerFactory() {
             Map<String, Object> configProps = new HashMap<>();
             configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
@@ -117,7 +118,7 @@ public class ReplyKafkaServerConfiguration {
         }
 
         @Bean("ReplyTaskTemplate")
-        public KafkaTemplate<UUID, DeskTaskDTO> replyTaskKafkaTemplate() {
+        public KafkaTemplate<UUID, DeskTaskRes> replyTaskKafkaTemplate() {
             return new KafkaTemplate<>(taskProducerFactory());
         }
     }
