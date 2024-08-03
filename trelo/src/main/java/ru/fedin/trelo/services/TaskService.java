@@ -2,6 +2,8 @@ package ru.fedin.trelo.services;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelo.dtos.DeskTaskDTO;
@@ -14,6 +16,8 @@ import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
 import ru.fedin.trelo.repositories.jpa.DeskContributorRepository;
 import ru.fedin.trelo.repositories.jpa.DeskTaskRepository;
 import ru.fedin.trelo.repositories.jpa.TaskPerformerRepository;
+import ru.fedin.trelo.search.SearchRequest;
+import ru.fedin.trelo.search.SearchSpecification;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -99,6 +103,13 @@ public class TaskService {
         entity = taskRepository.save(entity);
 
         return taskMapper.toDto(entity);
+    }
+
+    @Transactional
+    public Page<DeskTask> search(SearchRequest request){
+        SearchSpecification<DeskTask> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return taskRepository.findAll(specification, pageable);
     }
 
     @Transactional
