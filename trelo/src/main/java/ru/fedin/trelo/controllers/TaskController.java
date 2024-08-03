@@ -4,14 +4,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelo.dtos.DeskTaskDTO;
+import ru.fedin.trelo.eintites.DeskTask;
+import ru.fedin.trelo.search.SearchRequest;
 import ru.fedin.trelo.services.HistoryService;
 import ru.fedin.trelo.services.TaskService;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpStatus.*;
@@ -20,6 +25,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/task")
 @Tag(name = "Задача", description = "Работа с задачами")
 @RequiredArgsConstructor
+@Slf4j
 public class TaskController {
 
     private final TaskService taskService;
@@ -102,6 +108,12 @@ public class TaskController {
         if (taskService.changeColumn(taskId, columnId))
             return new ResponseEntity<>(ACCEPTED);
         return new ResponseEntity<>(BAD_REQUEST);
+    }
+
+    @PostMapping("/search")
+    Page<DeskTask> search(@RequestBody SearchRequest request){
+        log.info("Search: {}", request);
+        return taskService.search(request);
     }
 
     @Operation(summary = "История перемещения задачи по колонкам")
