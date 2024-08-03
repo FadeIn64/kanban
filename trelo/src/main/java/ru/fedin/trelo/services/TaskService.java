@@ -106,10 +106,10 @@ public class TaskService {
     }
 
     @Transactional
-    public Page<DeskTask> search(SearchRequest request){
+    public Page<DeskTaskDTO> search(SearchRequest request){
         SearchSpecification<DeskTask> specification = new SearchSpecification<>(request);
         Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
-        return taskRepository.findAll(specification, pageable);
+        return taskRepository.findAll(specification, pageable).map(taskMapper::toDto);
     }
 
     @Transactional

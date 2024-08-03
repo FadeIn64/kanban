@@ -11,12 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelo.dtos.DeskTaskDTO;
-import ru.fedin.trelo.eintites.DeskTask;
 import ru.fedin.trelo.search.SearchRequest;
 import ru.fedin.trelo.services.HistoryService;
 import ru.fedin.trelo.services.TaskService;
 
-import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpStatus.*;
@@ -111,7 +109,7 @@ public class TaskController {
     }
 
     @PostMapping("/search")
-    Page<DeskTask> search(@RequestBody SearchRequest request){
+    Page<DeskTaskDTO> search(@RequestBody SearchRequest request){
         log.info("Search: {}", request);
         return taskService.search(request);
     }
