@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.fedin.treloclient.dtos.enums.Importance;
+import ru.fedin.treloclient.validation.DataIntervalCheck;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
+@DataIntervalCheck(
+        startDate = "startDate",
+        endDate = "endDate"
+)
 public class DeskTaskReq {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
