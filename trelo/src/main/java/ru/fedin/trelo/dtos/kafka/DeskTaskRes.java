@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.fedin.trelo.eintites.enums.Importance;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

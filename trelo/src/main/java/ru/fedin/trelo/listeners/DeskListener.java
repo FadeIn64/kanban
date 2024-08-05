@@ -7,7 +7,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelo.dtos.DeskContributorDTO;
-import ru.fedin.trelo.dtos.DeskDTO;
 import ru.fedin.trelo.dtos.kafka.DeskContributorRes;
 import ru.fedin.trelo.dtos.kafka.DeskRes;
 import ru.fedin.trelo.mappers.kafka.DeskMapperKafka;

@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelo.dtos.DeskColumnDTO;
 import ru.fedin.trelo.services.ColumnService;
-import static org.springframework.http.HttpStatus.*;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/column")

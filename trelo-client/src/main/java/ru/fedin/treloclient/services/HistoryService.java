@@ -5,10 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
-import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
-import ru.fedin.treloclient.dtos.requests.TaskHistoryReq;
 import ru.fedin.treloclient.dtos.response.TaskHistoryRes;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

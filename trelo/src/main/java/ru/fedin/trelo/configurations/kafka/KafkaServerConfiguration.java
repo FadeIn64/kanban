@@ -16,7 +16,6 @@ import ru.fedin.trelo.dtos.kafka.DeskColumnRes;
 import ru.fedin.trelo.dtos.kafka.DeskRes;
 import ru.fedin.trelo.dtos.kafka.DeskTaskRes;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

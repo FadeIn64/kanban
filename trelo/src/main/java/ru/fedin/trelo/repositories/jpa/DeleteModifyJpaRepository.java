@@ -5,9 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
-import ru.fedin.trelo.eintites.DeskTask;
-
-import java.util.List;
 
 @NoRepositoryBean
 public interface DeleteModifyJpaRepository<E, U> extends JpaRepository<E, U> {

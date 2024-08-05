@@ -7,18 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.cache.DeskCacheService;
-import ru.fedin.treloclient.dtos.requests.DeskContributorReq;
 import ru.fedin.treloclient.dtos.requests.DeskReq;
 import ru.fedin.treloclient.dtos.response.DeskContributorRes;
 import ru.fedin.treloclient.dtos.response.DeskRes;
 import ru.fedin.treloclient.mappers.DeskMapper;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service

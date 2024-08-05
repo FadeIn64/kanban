@@ -9,7 +9,6 @@ import ru.fedin.trelo.dtos.minio.FileDTO;
 import ru.fedin.trelo.eintites.enums.Importance;
 import ru.fedin.trelo.validation.DataIntervalCheck;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

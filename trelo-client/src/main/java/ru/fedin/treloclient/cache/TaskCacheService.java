@@ -2,7 +2,6 @@ package ru.fedin.treloclient.cache;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.fedin.treloclient.dtos.response.DeskColumnRes;
 import ru.fedin.treloclient.dtos.response.DeskTaskRes;
 import ru.fedin.treloclient.repositories.redis.DeskRepository;
 import ru.fedin.treloclient.repositories.redis.TaskRepository;

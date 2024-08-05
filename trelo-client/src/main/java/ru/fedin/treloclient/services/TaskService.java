@@ -6,18 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.cache.TaskCacheService;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
-import ru.fedin.treloclient.dtos.requests.TaskPerformerReq;
 import ru.fedin.treloclient.dtos.response.DeskContributorRes;
 import ru.fedin.treloclient.dtos.response.DeskTaskRes;
 import ru.fedin.treloclient.dtos.response.TaskPerformerRes;
 import ru.fedin.treloclient.mappers.TaskMapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
