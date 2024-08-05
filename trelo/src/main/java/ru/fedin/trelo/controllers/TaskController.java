@@ -3,6 +3,7 @@ package ru.fedin.trelo.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,7 @@ public class TaskController {
 
     @Operation(summary = "Создать задачу")
     @PostMapping
-    ResponseEntity createTask(@RequestBody DeskTaskDTO task){
+    ResponseEntity createTask(@RequestBody @Valid DeskTaskDTO task){
         task = taskService.create(task);
         return new ResponseEntity<>(
                 task,
@@ -59,7 +60,7 @@ public class TaskController {
 
     @Operation(summary = "Редактировать задачу")
     @PutMapping("/{taskId}")
-    ResponseEntity changeTask(@RequestBody DeskTaskDTO task, @PathVariable Integer taskId){
+    ResponseEntity changeTask(@RequestBody @Valid DeskTaskDTO task, @PathVariable Integer taskId){
         task.setId(taskId);
         task = taskService.change(task);
 
