@@ -33,4 +33,7 @@ public class TaskFile {
     @NotNull
     @Column(name = "filename", nullable = false, length = Integer.MAX_VALUE)
     private String filename;
+
+    @Column(name = "task", nullable = false)
+    private Integer task;
 }

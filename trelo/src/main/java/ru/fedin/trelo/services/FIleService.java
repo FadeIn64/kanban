@@ -32,6 +32,7 @@ public class FIleService {
         request.setSize(request.getFile().getSize());
 
         var entity = fileMapper.toEntity(request);
+        entity.setTask(taskID);
         entity = fileRepository.save(entity);
 
         return minioService.uploadFile(request);
