@@ -9,6 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
+import ru.fedin.treloclient.dtos.response.DeskTaskRes;
+import ru.fedin.treloclient.dtos.response.MyPage;
+import ru.fedin.treloclient.search.SearchRequest;
 import ru.fedin.treloclient.services.HistoryService;
 import ru.fedin.treloclient.services.TaskService;
 
@@ -32,6 +35,11 @@ public class TaskController {
         if (task.getId() == 0)
             return new ResponseEntity<>(NOT_FOUND);
         return new ResponseEntity<>(task, OK);
+    }
+
+    @PostMapping("/search")
+    MyPage<DeskTaskRes> search(@RequestBody SearchRequest request){
+        return taskService.search(request);
     }
 
     @Operation(summary = "Создать задачу")

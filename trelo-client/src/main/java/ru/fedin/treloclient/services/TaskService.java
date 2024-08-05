@@ -4,6 +4,7 @@ import com.fasterxml.uuid.Generators;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -11,8 +12,10 @@ import ru.fedin.treloclient.cache.TaskCacheService;
 import ru.fedin.treloclient.dtos.requests.DeskTaskReq;
 import ru.fedin.treloclient.dtos.response.DeskContributorRes;
 import ru.fedin.treloclient.dtos.response.DeskTaskRes;
+import ru.fedin.treloclient.dtos.response.MyPage;
 import ru.fedin.treloclient.dtos.response.TaskPerformerRes;
 import ru.fedin.treloclient.mappers.TaskMapper;
+import ru.fedin.treloclient.search.SearchRequest;
 
 import java.util.UUID;
 
@@ -49,6 +52,15 @@ public class TaskService {
         }
 
 
+    }
+
+    public MyPage<DeskTaskRes> search(SearchRequest request){
+        return restClient.post()
+                .uri("/task/search")
+                .body(request)
+                .retrieve()
+                .body(new ParameterizedTypeReference<MyPage<DeskTaskRes>>() {
+                });
     }
 
 
