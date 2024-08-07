@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-@RedisHash("Task")
+@RedisHash(value = "Task")
 public class DeskTaskRes {
     @Id
     private Integer id;

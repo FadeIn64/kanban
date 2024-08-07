@@ -64,9 +64,11 @@ public class TaskService {
         return  dto;
     }
 
+
     @Transactional
     public boolean changeColumn(Integer taskId, Integer newColumn){
         var opt = taskRepository.findById(taskId);
+        // TODO: Добавить Controller Advice и ElseThrow
         if (opt.isEmpty())
             return false;
         var entity = opt.get();

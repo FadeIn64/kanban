@@ -41,6 +41,7 @@ public class TaskController {
 
     @Operation(summary = "Создать задачу")
     @PostMapping
+    @ResponseStatus(CREATED)
     ResponseEntity createTask(@RequestBody @Valid DeskTaskDTO task){
         task = taskService.create(task);
         return new ResponseEntity<>(
