@@ -32,14 +32,14 @@ public class Desk {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "desk")
-    List<DeskColumn> deskColumns = new ArrayList<>();
+    List<DeskColumn> deskColumns;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "desk")
-    List<DeskContributor> deskContributors = new ArrayList<>();
+    List<DeskContributor> deskContributors;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "desk")
-    List<DeskTask> deskTasks = new ArrayList<>();
+    List<DeskTask> deskTasks;
 
 }
