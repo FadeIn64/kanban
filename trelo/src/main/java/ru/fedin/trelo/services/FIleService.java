@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelo.dtos.minio.FileDTO;
+import ru.fedin.trelo.eintites.DeskTask;
 import ru.fedin.trelo.logic.filenaming.FileName;
 import ru.fedin.trelo.mappers.FileMapper;
 import ru.fedin.trelo.repositories.jpa.DeskTaskRepository;
@@ -32,7 +33,7 @@ public class FIleService {
         request.setSize(request.getFile().getSize());
 
         var entity = fileMapper.toEntity(request);
-        entity.setTask(taskID);
+        entity.setTask(DeskTask.builder().id(taskID).build());
         entity = fileRepository.save(entity);
 
         return minioService.uploadFile(request);

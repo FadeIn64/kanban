@@ -54,7 +54,7 @@ public class DeskTask {
     @Column(name = "startdate")
     private LocalDateTime startDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "task")
     private List<TaskPerformer> performers = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class DeskTask {
     @Formula("find_actual_column(id)")
     private Integer column;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "task")
     private List<TaskFile> files;
 

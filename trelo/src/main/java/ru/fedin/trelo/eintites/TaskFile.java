@@ -34,6 +34,7 @@ public class TaskFile {
     @Column(name = "filename", nullable = false, length = Integer.MAX_VALUE)
     private String filename;
 
-    @Column(name = "task", nullable = false)
-    private Integer task;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task")
+    private DeskTask task;
 }
