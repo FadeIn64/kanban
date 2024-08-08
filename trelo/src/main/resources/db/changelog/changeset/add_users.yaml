@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_users
+      author: danila_fedin
+      changes:
+        - sqlFile:
+            path: db/changelog/scripts/add_users_tables.sql
+            stripComments: true
+            splitStatements: true
