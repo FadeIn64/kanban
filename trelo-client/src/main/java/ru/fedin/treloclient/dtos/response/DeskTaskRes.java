@@ -34,7 +34,7 @@ public class DeskTaskRes {
 
     private String author;
 
-    private List<TaskPerformerRes> performers = new ArrayList<>();
+    private List<DeskContributorRes> performers = new ArrayList<>();
 
     private Importance importance;
 

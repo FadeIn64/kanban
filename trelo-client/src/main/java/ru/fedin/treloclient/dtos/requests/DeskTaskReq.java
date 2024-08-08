@@ -31,7 +31,7 @@ public class DeskTaskReq {
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<TaskPerformerReq> performers;
+    private List<DeskContributorReq> performers;
     private Importance importance;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createDate;

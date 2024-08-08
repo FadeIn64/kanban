@@ -6,11 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import ru.fedin.trelo.dtos.DeskContributorDTO;
+import ru.fedin.trelo.dtos.kafka.DeskContributorRes;
 import ru.fedin.trelo.dtos.kafka.DeskTaskRes;
 import ru.fedin.trelo.mappers.kafka.TaskMapperKafka;
 import ru.fedin.trelo.services.TaskService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -57,11 +60,11 @@ public class TaskListener {
         if (dto.getPerformers() == null)
             dto.setPerformers(new ArrayList<>());
 
-        var newContrs = task.getPerformers().stream()
-                .map(p -> p.getContributor())
+        List<String> newContrs = task.getPerformers().stream()
+                .map(DeskContributorRes::getContributor)
                 .toList();
-        var oldContrs = dto.getPerformers().stream()
-                .map(p -> p.getContributor())
+        List<String> oldContrs = dto.getPerformers().stream()
+                .map(DeskContributorDTO::getContributor)
                 .toList();
 
         //Добавляем новых участников
@@ -74,19 +77,18 @@ public class TaskListener {
                 .filter(perf -> !newContrs.contains(perf))
                 .forEach(perf -> taskService.removePerformer(dto.getId(), perf));
 
+        int taskID = task.getId();
         if (!dto.equals(taskMapper.toDto(task))){
             task = taskMapper.toEntity(taskService.change(taskMapper.toDto(task)));
         }
-        else {
-            //Без этого изменения в участниках могут не зафиксироваться в кэше
-            task = taskMapper.toEntity(taskService.findById(task.getId()));
-        }
-
+        //Без этого изменения в участниках могут не зафиксироваться в кэше
+        task = taskMapper.toEntity(taskService.findById(taskID));
 
         send(task);
     }
 
     private void send(DeskTaskRes task){
+        log.info("Sending Task: {}", task);
         replyTaskTemplate.send(replyTaskTopic, Generators.timeBasedGenerator().generate(), task);
     }
 

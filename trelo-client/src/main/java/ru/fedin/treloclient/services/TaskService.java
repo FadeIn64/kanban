@@ -110,8 +110,7 @@ public class TaskService {
         System.out.println(task.getDesk());
 
        var contr = DeskContributorRes.builder().contributor(newContributor).desk(task.getDesk()).build();
-       var performer = TaskPerformerRes.builder().contributor(contr).task(taskId).build();
-       task.getPerformers().add(performer);
+       task.getPerformers().add(contr);
 
         taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
         return true;
@@ -123,7 +122,7 @@ public class TaskService {
             return false;
 
         task.setPerformers(task.getPerformers().stream()
-                .filter(p -> !p.getContributor().getContributor().equals(oldContributor))
+                .filter(p -> !p.getContributor().equals(oldContributor))
                 .toList());
 
         taskTemplate.send(taskTopic, Generators.timeBasedGenerator().generate(), mapper.toReq(task));
