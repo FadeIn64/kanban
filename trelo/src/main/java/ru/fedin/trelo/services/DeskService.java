@@ -81,12 +81,12 @@ public class DeskService {
         if (!deskRepository.existsById(deskId))
             return new ArrayList<>();
 
-        var contributor = contributorRepository.findByDeskAndContributor(deskId, user);
+        var contributor = contributorRepository.findByDeskAndContributor(Desk.builder().id(deskId).build(), user);
         if (contributor.isEmpty()){
-            var newContributor = new DeskContributor(0, deskId, user);
+            var newContributor = new DeskContributor(0, Desk.builder().id(deskId).build(), user);
             contributorRepository.save(newContributor);
         }
-        return contributorMapper.toDto(contributorRepository.findAllByDesk(deskId));
+        return contributorMapper.toDto(contributorRepository.findAllByDesk(Desk.builder().id(deskId).build()));
     }
 
     @Transactional
@@ -95,7 +95,7 @@ public class DeskService {
         if (!deskRepository.existsById(deskId))
             return false;
 
-        var contributor = contributorRepository.findByDeskAndContributor(deskId, user);
+        var contributor = contributorRepository.findByDeskAndContributor(Desk.builder().id(deskId).build(), user);
         contributor.ifPresent(contributorRepository::delete);
         return true;
     }

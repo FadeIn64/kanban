@@ -122,7 +122,7 @@ public class TaskService {
             return new ArrayList<>();
         var task = opt.get();
 
-        var opt_contr = contributorRepository.findByDeskAndContributor(task.getDesk().getId(), newContributor);
+        var opt_contr = contributorRepository.findByDeskAndContributor(task.getDesk(), newContributor);
         if (opt_contr.isEmpty())
             return new ArrayList<>();
 

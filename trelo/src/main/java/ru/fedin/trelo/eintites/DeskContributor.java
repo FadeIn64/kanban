@@ -19,7 +19,9 @@ public class DeskContributor {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    private Integer desk;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "desk")
+    private Desk desk;
 
     @NotNull
     @Column(name = "contributor", nullable = false, length = Integer.MAX_VALUE)
