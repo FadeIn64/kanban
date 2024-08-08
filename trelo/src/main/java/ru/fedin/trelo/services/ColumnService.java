@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelo.dtos.DeskColumnDTO;
+import ru.fedin.trelo.eintites.Desk;
 import ru.fedin.trelo.eintites.DeskColumn;
 import ru.fedin.trelo.mappers.ColumnMapper;
 import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
@@ -34,7 +35,7 @@ public class ColumnService {
     @Transactional
     public DeskColumnDTO create(DeskColumnDTO dto){
         var entity = columnMapper.toEntity(dto);
-        var opt_prev = columnRepository.findByNextAndDesk(null, dto.getDesk());
+        var opt_prev = columnRepository.findByNextAndDesk(null, Desk.builder().id(dto.getDesk()).build());
         var prev = opt_prev.orElse(new DeskColumn());
         entity.setPrev(prev.getId());
         entity = columnRepository.save(entity);

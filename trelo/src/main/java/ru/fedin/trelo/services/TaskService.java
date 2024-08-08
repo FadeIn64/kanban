@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelo.dtos.DeskTaskDTO;
 import ru.fedin.trelo.dtos.TaskPerformerDTO;
+import ru.fedin.trelo.eintites.Desk;
 import ru.fedin.trelo.eintites.DeskTask;
 import ru.fedin.trelo.eintites.TaskPerformer;
 import ru.fedin.trelo.mappers.PerformerMapper;
@@ -55,7 +56,7 @@ public class TaskService {
         entity.setCreateDate(LocalDateTime.now());
         entity = taskRepository.save(entity);
 
-        var colOpt = columnRepository.findByPrevAndDesk(null, dto.getDesk());
+        var colOpt = columnRepository.findByPrevAndDesk(null, Desk.builder().id(dto.getDesk()).build());
 
         if(colOpt.isPresent())
             entity = historyService.changeColumn(entity, colOpt.get().getId());

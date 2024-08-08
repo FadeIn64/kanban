@@ -4,6 +4,6 @@ import org.mapstruct.Mapper;
 import ru.fedin.trelo.dtos.DeskDTO;
 import ru.fedin.trelo.eintites.Desk;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ColumnMapper.class})
 public interface DeskMapper extends DataMapper<Desk, DeskDTO>{
 }

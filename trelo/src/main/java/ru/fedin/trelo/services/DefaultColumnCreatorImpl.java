@@ -2,6 +2,7 @@ package ru.fedin.trelo.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.fedin.trelo.eintites.Desk;
 import ru.fedin.trelo.eintites.DeskColumn;
 import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
 
@@ -17,9 +18,9 @@ public class DefaultColumnCreatorImpl implements DefaultColumnCreator{
     @Override
     public List<DeskColumn> createDefault(int deskId) {
         List<DeskColumn> defaults = new ArrayList<>();
-        defaults.add(DeskColumn.builder().desk(deskId).name("Todo").build());
-        defaults.add(DeskColumn.builder().desk(deskId).name("Working").build());
-        defaults.add(DeskColumn.builder().desk(deskId).name("Finished").build());
+        defaults.add(DeskColumn.builder().desk(Desk.builder().id(deskId).build()).name("Todo").build());
+        defaults.add(DeskColumn.builder().desk(Desk.builder().id(deskId).build()).name("Working").build());
+        defaults.add(DeskColumn.builder().desk(Desk.builder().id(deskId).build()).name("Finished").build());
 
         defaults = deskColumnRepository.saveAll(defaults);
 

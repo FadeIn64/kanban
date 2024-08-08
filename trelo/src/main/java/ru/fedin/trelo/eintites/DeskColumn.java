@@ -19,8 +19,9 @@ public class DeskColumn {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull
-    private Integer desk;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "desk")
+    private Desk desk;
 
     @NotNull
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
