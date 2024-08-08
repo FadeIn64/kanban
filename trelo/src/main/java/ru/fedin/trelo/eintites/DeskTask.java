@@ -28,8 +28,9 @@ public class DeskTask {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull
-    private Integer desk;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "desk")
+    private Desk desk;
 
     @NotNull
     @Column(name = "header", nullable = false, length = Integer.MAX_VALUE)
