@@ -8,7 +8,7 @@ import ru.fedin.trelo.eintites.DeskTask;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ContributorMapper.class})
+@Mapper(componentModel = "spring", uses = {ContributorMapper.class, FileMapper.class})
 public interface TaskMapper extends DataMapper<DeskTask, DeskTaskDTO>{
 
     @Mapping(
