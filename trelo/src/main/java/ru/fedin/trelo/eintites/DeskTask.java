@@ -54,9 +54,13 @@ public class DeskTask {
     @Column(name = "startdate")
     private LocalDateTime startDate;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task")
-    private List<TaskPerformer> performers = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "task_performers",
+            joinColumns = @JoinColumn(name = "task"),
+            inverseJoinColumns = @JoinColumn(name = "contributor")
+    )
+    private List<DeskContributor> performers = new ArrayList<>();
 
     @Column(name = "enddate")
     private LocalDateTime endDate;

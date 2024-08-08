@@ -58,10 +58,10 @@ public class TaskListener {
             dto.setPerformers(new ArrayList<>());
 
         var newContrs = task.getPerformers().stream()
-                .map(p -> p.getContributor().getContributor())
+                .map(p -> p.getContributor())
                 .toList();
         var oldContrs = dto.getPerformers().stream()
-                .map(p -> p.getContributor().getContributor())
+                .map(p -> p.getContributor())
                 .toList();
 
         //Добавляем новых участников

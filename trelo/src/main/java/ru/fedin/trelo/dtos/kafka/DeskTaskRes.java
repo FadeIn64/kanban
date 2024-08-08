@@ -26,7 +26,7 @@ public class DeskTaskRes {
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
 
-    private List<TaskPerformerRes> performers = new ArrayList<>();
+    private List<DeskContributorRes> performers = new ArrayList<>();
     private Importance importance;
 
     private LocalDateTime createDate;

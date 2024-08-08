@@ -2,16 +2,20 @@ package ru.fedin.trelo.services;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.fedin.trelo.dtos.DeskContributorDTO;
 import ru.fedin.trelo.dtos.DeskTaskDTO;
 import ru.fedin.trelo.dtos.TaskPerformerDTO;
 import ru.fedin.trelo.eintites.Desk;
+import ru.fedin.trelo.eintites.DeskContributor;
 import ru.fedin.trelo.eintites.DeskTask;
 import ru.fedin.trelo.eintites.TaskPerformer;
-import ru.fedin.trelo.mappers.PerformerMapper;
+import ru.fedin.trelo.mappers.ContributorMapper;
 import ru.fedin.trelo.mappers.TaskMapper;
 import ru.fedin.trelo.repositories.jpa.DeskColumnRepository;
 import ru.fedin.trelo.repositories.jpa.DeskContributorRepository;
@@ -34,7 +38,7 @@ public class TaskService {
 
     private final TaskPerformerRepository performerRepository;
     private final DeskContributorRepository contributorRepository;
-    private final PerformerMapper performerMapper;
+    private final ContributorMapper contributorMapper;
 
     private final DeskColumnRepository columnRepository;
 
@@ -116,7 +120,7 @@ public class TaskService {
     }
 
     @Transactional
-    public List<TaskPerformerDTO> addPerformer(Integer taskId, String newContributor){
+    public List<DeskContributorDTO> addPerformer(Integer taskId, String newContributor){
         var opt = taskRepository.findById(taskId);
         if (opt.isEmpty())
             return new ArrayList<>();
@@ -128,28 +132,25 @@ public class TaskService {
 
         var contributor = opt_contr.get();
 
-        var performer = TaskPerformer.builder().task(taskId).contributor(contributor).build();
-        performer = performerRepository.save(performer);
-
-        task.getPerformers().add(performer);
-        return performerMapper.toDto(task.getPerformers());
+        task.getPerformers().add(contributor);
+        task = taskRepository.save(task);
+        return contributorMapper.toDto(task.getPerformers());
     }
 
     @Transactional
-    public List<TaskPerformerDTO> removePerformer(Integer taskId, @NotNull String newContributor){
+    @SneakyThrows
+    public List<DeskContributorDTO> removePerformer(Integer taskId, @NotNull String newContributor){
         var opt = taskRepository.findById(taskId);
         if (opt.isEmpty())
             return new ArrayList<>();
         var task = opt.get();
-
-        var performer = task.getPerformers().stream()
-                .filter(p -> newContributor.equals(p.getContributor().getContributor()))
-                .toList();
-
-        performerRepository.deleteAll(performer);
-
-        task.getPerformers().removeAll(performer);
-        return performerMapper.toDto(task.getPerformers());
+        //todo: поменять exception
+        DeskContributor contributor = task.getPerformers().stream()
+                .filter(p -> newContributor.equals(p.getContributor()))
+                .findFirst().orElseThrow(ChangeSetPersister.NotFoundException::new);
+        task.getPerformers().remove(contributor);
+        task = taskRepository.save(task);
+        return contributorMapper.toDto(task.getPerformers());
     }
 
 //    @Transactional

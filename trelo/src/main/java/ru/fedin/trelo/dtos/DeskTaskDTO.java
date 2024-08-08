@@ -32,7 +32,7 @@ public class DeskTaskDTO {
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<TaskPerformerDTO> performers;
+    private List<DeskContributorDTO> performers;
     private Importance importance;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createDate;
