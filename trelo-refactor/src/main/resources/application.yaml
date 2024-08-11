@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: trelo_refactor
+
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: on
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: danila
+    password: fedin
+    url: jdbc:postgresql://localhost:5432/trelo_refactor
+
+
+  liquibase:
+    enabled: true
+    driver-class-name: org.postgresql.Driver
+
+minio:
+  bucket:
+    name: demo-test
+  access:
+    key: minioadmin
+    secret: minioadmin
+  url: http://localhost:9000
+
+file-root-url: "http://localhost:8080/files"
+
+kafka:
+  topic:
+    desk: desk
+    column: column
+    task: task
