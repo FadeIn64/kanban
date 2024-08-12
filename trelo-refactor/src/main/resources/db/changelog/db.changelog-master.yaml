@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changeset/files.yaml
   - include:
       file: db/changelog/changeset/histories.yaml
+  - include:
+      file: db/changelog/changeset/drop_user_auth_data_sequense.yaml

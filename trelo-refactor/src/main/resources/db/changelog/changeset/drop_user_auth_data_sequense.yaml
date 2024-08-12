@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: danila
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: users_auth_data
+            constraintName: fk_users_auth_data
+        - dropColumn:
+            tableName: users_auth_data
+            columnName: id
+        - addColumn:
+            tableName: users_auth_data
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_users_auth_data
+                    references: users(id)
