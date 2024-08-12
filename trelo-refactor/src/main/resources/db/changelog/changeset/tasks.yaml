@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: danila
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: header
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: importance
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: coast
+                  type: decimal
+                  constraints:
+                    nullable: true
+              - column:
+                  name: create_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValue: "now()"
+              - column:
+                  name: start_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                    checkConstraint: "start_date < end_date"
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_user
+                    references: users(id)
+              - column:
+                  name: desk_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_desk
+                    references: desks(id)
+              - column:
+                  name: column_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_column
+                    references: columns(id)

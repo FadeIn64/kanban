@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/desks.yaml
   - include:
       file: db/changelog/changeset/columns.yaml
+  - include:
+      file: db/changelog/changeset/tasks.yaml
