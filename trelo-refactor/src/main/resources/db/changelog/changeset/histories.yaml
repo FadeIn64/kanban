@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: danila
+      changes:
+        - createTable:
+            tableName: histories
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: change_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValue: "now()"
+              - column:
+                  name: task_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_histories_task
+                    references: tasks(id)
+              - column:
+                  name: column_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_histories_column
+                    references: columns(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_histories_user
+                    references: users(id)

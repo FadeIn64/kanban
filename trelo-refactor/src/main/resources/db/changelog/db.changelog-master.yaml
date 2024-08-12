@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changeset/tasks.yaml
   - include:
       file: db/changelog/changeset/files.yaml
+  - include:
+      file: db/changelog/changeset/histories.yaml
