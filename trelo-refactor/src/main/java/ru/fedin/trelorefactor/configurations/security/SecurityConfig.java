@@ -4,6 +4,7 @@ package ru.fedin.trelorefactor.configurations.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,14 +20,15 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(auth -> {
             auth
-                    .requestMatchers("/swagger-ui/**")
-                    .anonymous()
-                    .requestMatchers(HttpMethod.POST,"/users")
-                    .anonymous()
-                    .requestMatchers(HttpMethod.GET, "/users/**")
-                    .authenticated()
-                    .anyRequest().permitAll();
+                .requestMatchers("/v3/api-docs/**",
+                        "/swagger-ui/**", "/swagger-ui.html")
+                .anonymous()
+                .requestMatchers(HttpMethod.POST,"/users")
+                .anonymous()
+                .anyRequest()
+                .authenticated();
         })
+            .httpBasic(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable);
         return http.build();
