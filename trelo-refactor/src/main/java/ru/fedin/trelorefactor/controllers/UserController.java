@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    UserDetails get(@PathVariable String username){
-        return userDetailsService.loadUserByUsername(username);
+    String get(@PathVariable String username){
+        return userDetailsService.loadUserByUsername(username).getUsername();
     }
 
 }
