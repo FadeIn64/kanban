@@ -3,6 +3,11 @@ package ru.fedin.trelorefactor.eintites;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -13,7 +18,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "users_auth_data")
-public class UsersCredentialsData {
+public class UsersCredentialsData implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     @EqualsAndHashCode.Include
@@ -32,4 +37,28 @@ public class UsersCredentialsData {
     @Column(name = "password", nullable = false, length = Integer.MAX_VALUE)
     private String password;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
