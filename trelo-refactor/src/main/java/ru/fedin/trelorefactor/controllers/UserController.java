@@ -1,5 +1,6 @@
 package ru.fedin.trelorefactor.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto register(@RequestBody RegistrationReq request){
+    UserDto register(@RequestBody @Valid RegistrationReq request){
         return userDetailsService.registerUser(request);
     }
 
