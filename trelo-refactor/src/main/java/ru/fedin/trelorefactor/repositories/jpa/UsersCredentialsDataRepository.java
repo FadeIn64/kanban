@@ -14,4 +14,11 @@ public interface UsersCredentialsDataRepository extends JpaRepository<UsersCrede
     """)
     Optional<UsersCredentialsData> findByUsername(String username);
 
+    @Query(value = """
+        insert into trelo_refactor.public.users_auth_data (id, username, password)
+        values (?, ?, ?)
+        returning *;
+    """, nativeQuery = true)
+    Optional<UsersCredentialsData> insert(Long id, String username, String password);
+
 }

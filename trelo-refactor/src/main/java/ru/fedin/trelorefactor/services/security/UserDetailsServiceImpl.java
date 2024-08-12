@@ -8,21 +8,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.UserDto;
-import ru.fedin.trelorefactor.eintites.User;
-import ru.fedin.trelorefactor.eintites.UsersCredentialsData;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
+import ru.fedin.trelorefactor.exceptions.UpdateOrInsertException;
 import ru.fedin.trelorefactor.mappers.UserMapper;
-import ru.fedin.trelorefactor.repositories.jpa.UserRepository;
 import ru.fedin.trelorefactor.repositories.jpa.UsersCredentialsDataRepository;
 import ru.fedin.trelorefactor.requests.RegistrationReq;
+import ru.fedin.trelorefactor.services.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UsersCredentialsDataRepository repository;
-    private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -32,19 +31,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public UserDto registerUser(RegistrationReq request){
-        User user = User.builder()
-                .id(0L)
-                .name(request.getUsername())
-                .email(request.getEmail())
-                .build();
-        user = userRepository.save(user);
-        UsersCredentialsData ucd = UsersCredentialsData.builder()
-                .users(user)
-                .id(user.getId())
-                .username(user.getName())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
-        ucd = repository.save(ucd);
-        return userMapper.toDto(user);
+        UserDto user = userService.createUser(request);
+        try {
+            repository.insert(user.getId(), user.getName(), passwordEncoder.encode(request.getPassword())).orElseThrow(UpdateOrInsertException::new);
+        }catch (Exception e){
+            throw new UpdateOrInsertException("Insert error", e.getCause());
+        }
+
+        return user;
     }
 }

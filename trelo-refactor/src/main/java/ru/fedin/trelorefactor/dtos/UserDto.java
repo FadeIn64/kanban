@@ -2,9 +2,8 @@ package ru.fedin.trelorefactor.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
-import java.io.Serializable;
+import lombok.Builder;
+import lombok.Value;
 
 
 @Value

@@ -24,7 +24,7 @@ public class UsersCredentialsData implements UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @MapsId
+//    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id", nullable = false)
     private User users;
