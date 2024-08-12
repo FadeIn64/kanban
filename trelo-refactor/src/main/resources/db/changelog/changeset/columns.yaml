@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: danila
+      changes:
+        - createTable:
+            tableName: columns
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: desk_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_columns_desk
+                    references: desks(id)
