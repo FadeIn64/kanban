@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changeset/users.yaml
+  - include:
+      file: db/changelog/changeset/users_auth_data.yaml
