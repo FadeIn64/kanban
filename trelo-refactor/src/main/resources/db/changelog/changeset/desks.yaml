@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: danila
+      changes:
+        - createTable:
+            tableName: desks
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_desk_author
+                    references: users(id)
+        - createTable:
+            tableName: desks_users
+            columns:
+              - column:
+                  name: desk_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_desks_users
+                    references: desks(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_users_desks
+                    references: users(id)
