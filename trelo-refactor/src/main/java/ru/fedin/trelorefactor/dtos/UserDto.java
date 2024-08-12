@@ -1,7 +1,6 @@
 package ru.fedin.trelorefactor.dtos;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Value;
 
@@ -10,9 +9,8 @@ import lombok.Value;
 @Builder
 public class UserDto{
     Long id;
-    @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String name;
-    @NotNull
-    @Email
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String email;
 }
