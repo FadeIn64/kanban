@@ -22,7 +22,7 @@ public class SecurityConfig {
             auth
                 .requestMatchers("/v3/api-docs/**",
                         "/swagger-ui/**", "/swagger-ui.html")
-                .anonymous()
+                .permitAll()
                 .requestMatchers(HttpMethod.POST,"/users")
                 .anonymous()
                 .anyRequest()
