@@ -16,4 +16,12 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
     Integer updateNameById(Long id, String name);
 
 
+    @Modifying
+    @Query(value = """
+        insert into desks_users (desk_id, user_id)
+        values (?, ?)
+    """, nativeQuery = true)
+    void addUser(long deskId, long userId);
+
+
 }

@@ -6,7 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelorefactor.dtos.DeskDto;
+import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.services.DeskService;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.ACCEPTED;
 
@@ -51,18 +54,13 @@ public class DeskController {
                       @Parameter(description = "Новое имя") String newName){
         return deskService.rename(deskId, newName);
     }
-//
-//    @Operation(summary = "Добавить нового участника",
-//    description = "Возвращает список участников")
-//    @PostMapping("/{deskId}/contributor")
-//    ResponseEntity addContributor(@PathVariable int deskId, @RequestBody String user){
-//
-//        var contributors = deskService.addContributor(deskId, user);
-//        if (contributors.size() == 0)
-//            return new ResponseEntity("Desk no exist", HttpStatus.BAD_REQUEST);
-//
-//        return new ResponseEntity(contributors, HttpStatus.OK);
-//    }
+
+    @Operation(summary = "Добавить нового участника",
+    description = "Возвращает список участников")
+    @PostMapping("/{deskId}/contributor")
+    List<UserDto> addContributor(@PathVariable long deskId, @RequestBody long user){
+        return deskService.addContributor(deskId, user);
+    }
 //
 //    @Operation(summary = "Удалить участника")
 //    @DeleteMapping("/{deskId}/contributor")

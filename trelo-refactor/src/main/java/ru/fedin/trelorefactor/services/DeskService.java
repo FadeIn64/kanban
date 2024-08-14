@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.DeskDto;
+import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.eintites.Desk;
 import ru.fedin.trelorefactor.eintites.User;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
 import ru.fedin.trelorefactor.exceptions.UpdateOrInsertException;
 import ru.fedin.trelorefactor.mappers.DeskMapper;
+import ru.fedin.trelorefactor.mappers.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
+import ru.fedin.trelorefactor.repositories.jpa.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +23,9 @@ import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
 public class DeskService {
     private final DeskRepository deskRepository;
     private final DeskMapper deskMapper;
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     private final DefaultColumnCreator defaultColumnCreator;
 
@@ -53,5 +61,17 @@ public class DeskService {
 
     public void delete(long deskId) {
         deskRepository.deleteById(deskId);
+    }
+
+    @Transactional
+    public List<UserDto> addContributor(long deskId, long userId) {
+        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new  UpdateOrInsertException("desk don't exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new  UpdateOrInsertException("user don't exist"));
+        List<UserDto> users = userMapper.toDto(desk.getUsers());
+        if (!desk.getUsers().contains(user)){
+            deskRepository.addUser(deskId, userId);
+            users.add(userMapper.toDto(user));
+        }
+        return users;
     }
 }
