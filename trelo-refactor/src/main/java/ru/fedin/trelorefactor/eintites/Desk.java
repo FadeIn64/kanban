@@ -32,11 +32,11 @@ public class Desk {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "desk_id")
     private List<ColumnEntity> columns = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "desks_users",
             joinColumns = @JoinColumn(name = "desk_id"),
@@ -44,7 +44,7 @@ public class Desk {
     )
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "desk_id")
     private List<Task> tasks = new ArrayList<>();
 

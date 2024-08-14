@@ -30,7 +30,7 @@ public class ColumnEntity {
     private Integer order;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
     @JoinColumn(name = "desk_id", nullable = false)
     private Desk desk;
 

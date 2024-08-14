@@ -50,4 +50,8 @@ public class DeskService {
         }
         return true;
     }
+
+    public void delete(long deskId) {
+        deskRepository.deleteById(deskId);
+    }
 }

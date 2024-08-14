@@ -33,15 +33,15 @@ public class DeskController {
         return deskService.create(desk);
     }
 
-//    @Operation(summary = "Удалить доску по Id",
-//    description = "Удаляет всю доску с ее элементами")
-//    @DeleteMapping("/{deskId}")
-//    ResponseEntity deleteDesk(@PathVariable int deskId){
-//        deskService.delete(deskId);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//
+    @Operation(summary = "Удалить доску по Id",
+    description = "Удаляет всю доску с ее элементами")
+    @DeleteMapping("/{deskId}")
+    @ResponseBody
+    @ResponseStatus(ACCEPTED)
+    void deleteDesk(@PathVariable long deskId){
+        deskService.delete(deskId);
+    }
+
     @Operation(summary = "Переименовать доску")
     @PutMapping("/{deskId}")
     @ResponseBody
