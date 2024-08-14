@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelorefactor.dtos.DeskDto;
 import ru.fedin.trelorefactor.services.DeskService;
+
+import static org.springframework.http.HttpStatus.ACCEPTED;
 
 
 @RestController
@@ -42,16 +42,15 @@ public class DeskController {
 //    }
 //
 //
-//    @Operation(summary = "Переименовать доску")
-//    @PutMapping("/{deskId}")
-//    HttpStatus rename(@PathVariable int deskId,
-//                      @RequestBody
-//                      @Parameter(description = "Новое имя") String newName){
-//        var desk = deskService.rename(deskId, newName);
-//        if (desk.getId() == 0)
-//            return HttpStatus.NOT_FOUND;
-//        return HttpStatus.OK;
-//    }
+    @Operation(summary = "Переименовать доску")
+    @PutMapping("/{deskId}")
+    @ResponseBody
+    @ResponseStatus(ACCEPTED)
+    boolean rename(@PathVariable long deskId,
+                      @RequestBody
+                      @Parameter(description = "Новое имя") String newName){
+        return deskService.rename(deskId, newName);
+    }
 //
 //    @Operation(summary = "Добавить нового участника",
 //    description = "Возвращает список участников")

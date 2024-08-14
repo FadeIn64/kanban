@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +23,9 @@ public class DeskDto implements Serializable {
     @NotNull
     private UserDto author;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<ColumnDto> columns;
+    private List<ColumnDto> columns = new ArrayList<>();
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<UserDto> users;
+    private List<UserDto> users = new ArrayList<>();
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<TaskDto> tasks;
+    private List<TaskDto> tasks = new ArrayList<>();
 }
