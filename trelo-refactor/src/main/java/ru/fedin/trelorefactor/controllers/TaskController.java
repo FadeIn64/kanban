@@ -74,19 +74,15 @@ public class TaskController {
                                 @Parameter(description = "Новый исполнитель") Long performer){
         return taskService.changePerformer(taskId, performer);
     }
-//
-//    @Operation(summary = "Удалить Исполнителя",
-//            description = "Возвращает список исполнителей")
-//    @DeleteMapping("/{taskId}/performer")
-//    ResponseEntity removePerformer(@PathVariable int taskId,
-//                                @RequestBody
-//                                @Parameter(description = "Исполнитель") String performer){
-//        var performers = taskService.removePerformer(taskId, performer);
-//        if (performers.isEmpty())
-//            return new ResponseEntity<>(BAD_REQUEST);
-//        return new ResponseEntity<>(performers, HttpStatus.ACCEPTED);
-//    }
-//
+
+    @Operation(summary = "Удалить Исполнителя",
+            description = "Возвращает список исполнителей")
+    @DeleteMapping("/{taskId}/performer")
+    @ResponseStatus(ACCEPTED)
+    void removePerformer(@PathVariable long taskId){
+        taskService.changePerformer(taskId, null);
+    }
+
 //    @Operation(summary = "Изменить колнку для задачи")
 //    @PutMapping("/{taskId}/changeColumn")
 //    ResponseEntity changeColumn(@PathVariable int taskId,

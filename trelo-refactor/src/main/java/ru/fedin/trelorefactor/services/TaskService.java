@@ -103,7 +103,8 @@ public class TaskService {
     @Transactional
     public UserDto changePerformer(long taskId, Long performer) {
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFound("task don't exist"));
-        if (deskRepository.existsContributor(task.getDeskId(), performer) < 1) {
+        if (performer != null // для более удобной очистки ползователя
+                && deskRepository.existsContributor(task.getDeskId(), performer) < 1) {
             throw new ModifyDataException("performer is not a contributor");
         }
         task.setUserId(performer);
