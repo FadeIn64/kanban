@@ -11,11 +11,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.fedin.trelorefactor.dtos.HistoryDto;
 import ru.fedin.trelorefactor.dtos.TaskDto;
 import ru.fedin.trelorefactor.services.TaskService;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -105,27 +107,26 @@ public class TaskController {
 //        log.info("Search: {}", request);
 //        return taskService.search(request);
 //    }
-//
-//    @Operation(summary = "История перемещения задачи по колонкам")
-//    @GetMapping("/{taskId}/history")
-//    ResponseEntity getHistory(
-//            @PathVariable
-//            @Parameter(description = "Индефикатор задачи")
-//            Integer taskId,
-//            @RequestParam (defaultValue = "2020-01-01T01:30:00.000-05:00")
-//            @Parameter(description = "Дата начала периода", required = false)
-//            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-//            LocalDateTime from,
-//            @RequestParam (defaultValue = "2100-01-01T01:30:00.000-05:00")
-//            @Parameter(description = "Дата окончания периода", required = false)
-//            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-//            LocalDateTime to
-//
-//    ){
-//        var histories = historyService.findAllByTaskAndChangeDate(taskId, from, to);
-//        if (histories.isEmpty())
-//            return new ResponseEntity(BAD_REQUEST);
-//        return new ResponseEntity<>(histories, OK);
-//    }
+
+    @Operation(summary = "История перемещения задачи по колонкам")
+    @GetMapping("/{taskId}/history")
+    @ResponseBody
+    @ResponseStatus(OK)
+    List<HistoryDto> getHistory(
+            @PathVariable
+            @Parameter(description = "Индефикатор задачи")
+            Long taskId,
+            @RequestParam (defaultValue = "2020-01-01T01:30:00.000-05:00")
+            @Parameter(description = "Дата начала периода", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime from,
+            @RequestParam (defaultValue = "2100-01-01T01:30:00.000-05:00")
+            @Parameter(description = "Дата окончания периода", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime to
+
+    ){
+        return taskService.findAllHistoryByTaskAndChangeDate(taskId, from, to);
+    }
 
 }

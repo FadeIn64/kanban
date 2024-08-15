@@ -17,6 +17,7 @@ import ru.fedin.trelorefactor.repositories.jpa.HistoryRepository;
 import ru.fedin.trelorefactor.repositories.jpa.TaskRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -84,5 +85,12 @@ public class TaskService {
         task.setUserId(reference.getUserId());
 
         return taskMapper.toDto(taskRepository.save(task));
+    }
+
+    public List<HistoryDto> findAllHistoryByTaskAndChangeDate(Long taskId, LocalDateTime from, LocalDateTime to) {
+        if (!taskRepository.existsById(taskId)) {
+            throw new EntityNotFound("task don't exist");
+        }
+        return historyMapper.toDto(historyRepository.findAllByTaskAndChangeDateBetween(Task.builder().id(taskId).build(), from, to));
     }
 }
