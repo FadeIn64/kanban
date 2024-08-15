@@ -47,6 +47,6 @@ public class History {
     private User user;
 
     @Column(name = "user_id")
-    private long userId;
+    private Long userId;
 
 }

@@ -35,16 +35,16 @@ public class TaskController {
         return taskService.findById(taskId);
     }
 
-//    @Operation(summary = "Создать задачу")
-//    @PostMapping
-//    @ResponseStatus(CREATED)
-//    ResponseEntity createTask(@RequestBody @Valid DeskTaskDTO task){
-//        task = taskService.create(task);
-//        return new ResponseEntity<>(
-//                task,
-//                CREATED
-//        );
-//    }
+    @Operation(summary = "Создать задачу")
+    @PostMapping("/{deskId}/{columnId}")
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    TaskDto createTask(@RequestBody @Valid TaskDto task, @PathVariable long deskId, @PathVariable long columnId){
+        task.setDeskId(deskId);
+        task.setColumnId(columnId);
+        return taskService.create(task);
+
+    }
 //
 //    @Operation(summary = "Удалить задачу",
 //            description = "Удаляет всё, включая историю")

@@ -58,12 +58,15 @@ public class Task {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
     private User performer;
 
-    @NotNull
+    @Column(name = "user_id")
+    private Long userId;
+
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "desk_id", nullable = false, updatable = false, insertable = false)
     private Desk desk;
@@ -71,7 +74,7 @@ public class Task {
     @Column(name = "desk_id")
     private long deskId;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "column_id", nullable = false, updatable = false, insertable = false)
     private ColumnEntity column;

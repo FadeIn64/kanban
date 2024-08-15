@@ -4,4 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.fedin.trelorefactor.eintites.ColumnEntity;
 
 public interface ColumnEntityRepository extends JpaRepository<ColumnEntity, Long> {
+
+    boolean existsByIdAndDeskId(Long id, long deskId);
+
 }
