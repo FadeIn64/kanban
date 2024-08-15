@@ -63,4 +63,13 @@ public class TaskService {
                 .build();
         return historyMapper.toDto(historyRepository.save(history));
     }
+
+    @Transactional
+    public void removeTask(Long taskId) {
+        try {
+            taskRepository.deleteById(taskId);
+        }catch (Exception e) {
+            throw new ModifyDataException(e.getCause());
+        }
+    }
 }

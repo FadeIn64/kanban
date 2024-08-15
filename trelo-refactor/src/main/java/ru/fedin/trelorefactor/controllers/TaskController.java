@@ -31,7 +31,7 @@ public class TaskController {
     @Operation(summary = "Найти задачу по id", description = "Возвращает всю информацию о задаче")
     @GetMapping("/{taskId}")
     @ResponseBody
-    TaskDto getTask(@PathVariable int taskId){
+    public TaskDto getTask(@PathVariable int taskId){
         return taskService.findById(taskId);
     }
 
@@ -39,21 +39,20 @@ public class TaskController {
     @PostMapping("/{deskId}/{columnId}")
     @ResponseStatus(CREATED)
     @ResponseBody
-    TaskDto createTask(@RequestBody @Valid TaskDto task, @PathVariable long deskId, @PathVariable long columnId){
+    public TaskDto createTask(@RequestBody @Valid TaskDto task, @PathVariable long deskId, @PathVariable long columnId){
         task.setDeskId(deskId);
         task.setColumnId(columnId);
         return taskService.create(task);
 
     }
-//
-//    @Operation(summary = "Удалить задачу",
-//            description = "Удаляет всё, включая историю")
-//    @DeleteMapping("/{taskId}")
-//    ResponseEntity deleteTask(@PathVariable int taskId){
-//        if (taskService.removeTask(taskId))
-//            return new ResponseEntity<>(OK);
-//        return new ResponseEntity<>(BAD_REQUEST);
-//    }
+
+    @Operation(summary = "Удалить задачу",
+            description = "Удаляет всё, включая историю")
+    @DeleteMapping("/{taskId}")
+    @ResponseStatus(ACCEPTED)
+    public void deleteTask(@PathVariable Long taskId){
+        taskService.removeTask(taskId);
+    }
 //
 //    @Operation(summary = "Редактировать задачу")
 //    @PutMapping("/{taskId}")

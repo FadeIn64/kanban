@@ -86,4 +86,8 @@ public class Task {
     @JoinColumn(name = "task_id")
     private List<File> files = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "task_id")
+    private List<History> histories = new ArrayList<>();
+
 }
