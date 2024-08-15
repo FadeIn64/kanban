@@ -83,11 +83,11 @@ public class Task {
     private long columnId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", updatable = false, insertable = false)
     private List<File> files = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", updatable = false, insertable = false)
     private List<History> histories = new ArrayList<>();
 
 }

@@ -72,4 +72,17 @@ public class TaskService {
             throw new ModifyDataException(e.getCause());
         }
     }
+
+    public TaskDto change(@Valid TaskDto taskDto) {
+        Task task = taskMapper.toEntity(taskDto);
+        Task reference = taskRepository.findById(task.getId()).orElseThrow(()-> new ModifyDataException("task don't exist"));
+
+        //Данные которые нельзя обновить просто так
+        task.setCreateDate(reference.getCreateDate());
+        task.setDeskId(reference.getDeskId());
+        task.setColumnId(reference.getColumnId());
+        task.setUserId(reference.getUserId());
+
+        return taskMapper.toDto(taskRepository.save(task));
+    }
 }

@@ -53,22 +53,17 @@ public class TaskController {
     public void deleteTask(@PathVariable Long taskId){
         taskService.removeTask(taskId);
     }
-//
-//    @Operation(summary = "Редактировать задачу")
-//    @PutMapping("/{taskId}")
-//    ResponseEntity changeTask(@RequestBody @Valid DeskTaskDTO task, @PathVariable Integer taskId){
-//        task.setId(taskId);
-//        task = taskService.change(task);
-//
-//        if (task.getId() == 0)
-//            return new ResponseEntity(BAD_REQUEST);
-//
-//        return new ResponseEntity<>(
-//                task,
-//                OK
-//        );
-//    }
-//
+
+    @Operation(summary = "Редактировать задачу")
+    @PutMapping("/{taskId}")
+    @ResponseBody
+    @ResponseStatus(ACCEPTED)
+    TaskDto changeTask(@RequestBody @Valid TaskDto task, @PathVariable Long taskId){
+        task.setId(taskId);
+        return taskService.change(task);
+
+    }
+
 //    @Operation(summary = "Добавить Исполнителя",
 //            description = "Возвращает список исполнителей")
 //    @PostMapping("/{taskId}/performer")
