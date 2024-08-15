@@ -6,13 +6,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelorefactor.dtos.HistoryDto;
 import ru.fedin.trelorefactor.dtos.TaskDto;
+import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.services.TaskService;
 
 
@@ -66,17 +64,16 @@ public class TaskController {
 
     }
 
-//    @Operation(summary = "Добавить Исполнителя",
-//            description = "Возвращает список исполнителей")
-//    @PostMapping("/{taskId}/performer")
-//    ResponseEntity addPerformer(@PathVariable int taskId,
-//                                @RequestBody
-//                                @Parameter(description = "Новый исполнитель") String performer){
-//        var performers = taskService.addPerformer(taskId, performer);
-//        if (performers.isEmpty())
-//            return new ResponseEntity<>(BAD_REQUEST);
-//        return new ResponseEntity<>(performers, HttpStatus.ACCEPTED);
-//    }
+    @Operation(summary = "Добавить Исполнителя",
+            description = "Возвращает список исполнителей")
+    @PostMapping("/{taskId}/performer")
+    @ResponseBody
+    @ResponseStatus(ACCEPTED)
+    UserDto changePerformer(@PathVariable long taskId,
+                            @RequestBody
+                                @Parameter(description = "Новый исполнитель") Long performer){
+        return taskService.changePerformer(taskId, performer);
+    }
 //
 //    @Operation(summary = "Удалить Исполнителя",
 //            description = "Возвращает список исполнителей")

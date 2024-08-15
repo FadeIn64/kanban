@@ -30,5 +30,8 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
     """, nativeQuery = true)
     void deleteUser(long deskId, long userId);
 
+    @Query(value = "select count(*) from desks_users where desk_id = ? and user_id = ?",
+            nativeQuery = true)
+    Long existsContributor(long deskId, long userId);
 
 }

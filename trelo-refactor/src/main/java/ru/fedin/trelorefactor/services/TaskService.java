@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.HistoryDto;
 import ru.fedin.trelorefactor.dtos.TaskDto;
+import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.eintites.History;
 import ru.fedin.trelorefactor.eintites.Task;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.HistoryMapper;
 import ru.fedin.trelorefactor.mappers.TaskMapper;
+import ru.fedin.trelorefactor.mappers.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.ColumnEntityRepository;
+import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
 import ru.fedin.trelorefactor.repositories.jpa.HistoryRepository;
 import ru.fedin.trelorefactor.repositories.jpa.TaskRepository;
 
@@ -30,6 +33,8 @@ public class TaskService {
     private final HistoryMapper historyMapper;
 
     private final ColumnEntityRepository columnRepository;
+    private final DeskRepository deskRepository;
+    private final UserMapper userMapper;
 
     public TaskDto findById(long taskId) {
         return taskMapper.toDto(taskRepository.findById(taskId)
@@ -74,6 +79,7 @@ public class TaskService {
         }
     }
 
+    @Transactional
     public TaskDto change(@Valid TaskDto taskDto) {
         Task task = taskMapper.toEntity(taskDto);
         Task reference = taskRepository.findById(task.getId()).orElseThrow(()-> new ModifyDataException("task don't exist"));
@@ -92,5 +98,17 @@ public class TaskService {
             throw new EntityNotFound("task don't exist");
         }
         return historyMapper.toDto(historyRepository.findAllByTaskAndChangeDateBetween(Task.builder().id(taskId).build(), from, to));
+    }
+
+    @Transactional
+    public UserDto changePerformer(long taskId, Long performer) {
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFound("task don't exist"));
+        if (deskRepository.existsContributor(task.getDeskId(), performer) < 1) {
+            throw new ModifyDataException("performer is not a contributor");
+        }
+        task.setUserId(performer);
+        addHistory(task);
+        task = taskRepository.save(task);
+        return userMapper.toDto(task.getPerformer());
     }
 }
