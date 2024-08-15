@@ -29,9 +29,11 @@ public class ColumnEntity {
     @Column(name = "\"order\"", nullable = false)
     private Integer order;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "desk_id", nullable = false)
+    @JoinColumn(name = "desk_id", nullable = false, updatable = false, insertable = false)
     private Desk desk;
 
+    @Column(name = "desk_id")
+    private long deskId;
 }

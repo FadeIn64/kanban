@@ -3,6 +3,7 @@ package ru.fedin.trelorefactor.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.fedin.trelorefactor.dtos.ColumnDto;
 import ru.fedin.trelorefactor.services.ColumnService;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/column")
@@ -21,18 +21,18 @@ public class ColumnController {
 
     private final ColumnService columnService;
 
-//    @Operation(summary = "Создать колонку",
-//                description = "Добавляет колонку в конец")
-//    @PostMapping
-//    ResponseEntity create(@RequestBody DeskColumnDTO column){
-//        column = columnService.create(column);
-//        return new ResponseEntity<>(column,
-//                HttpStatus.CREATED);
-//    }
-//
+    @Operation(summary = "Создать колонку")
+    @PostMapping("/{deskId}")
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    public ColumnDto create(@PathVariable long deskId,@RequestBody @Valid ColumnDto column){
+        return columnService.create(column, deskId);
+    }
+
     @Operation(summary = "Найти колонку по id")
     @GetMapping("/{columnId}")
-    ColumnDto getColumn(@PathVariable long columnId){
+    @ResponseBody
+    public ColumnDto getColumn(@PathVariable long columnId){
         return columnService.findById(columnId);
     }
 //
