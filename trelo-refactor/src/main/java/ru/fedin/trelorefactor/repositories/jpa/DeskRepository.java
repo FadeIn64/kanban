@@ -23,5 +23,12 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
     """, nativeQuery = true)
     void addUser(long deskId, long userId);
 
+    @Modifying
+    @Query(value = """
+    delete from desks_users
+    where desk_id = ? and user_id = ?
+    """, nativeQuery = true)
+    void deleteUser(long deskId, long userId);
+
 
 }

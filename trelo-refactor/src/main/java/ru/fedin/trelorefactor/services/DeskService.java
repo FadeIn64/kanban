@@ -9,7 +9,7 @@ import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.eintites.Desk;
 import ru.fedin.trelorefactor.eintites.User;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
-import ru.fedin.trelorefactor.exceptions.UpdateOrInsertException;
+import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.DeskMapper;
 import ru.fedin.trelorefactor.mappers.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
@@ -43,7 +43,7 @@ public class DeskService {
         }
         catch (Exception e){
             log.error("Exception: ", e);
-            throw new UpdateOrInsertException("desk don't create");
+            throw new ModifyDataException("desk don't create");
         }
         entity.setColumns(defaultColumnCreator.createDefault(entity));
 
@@ -54,7 +54,7 @@ public class DeskService {
     public boolean rename(long deskId, String newName) {
         int res = deskRepository.updateNameById(deskId, newName);
         if (res < 0){
-            throw new UpdateOrInsertException("desk don't exist");
+            throw new ModifyDataException("desk don't exist");
         }
         return true;
     }
@@ -65,12 +65,25 @@ public class DeskService {
 
     @Transactional
     public List<UserDto> addContributor(long deskId, long userId) {
-        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new  UpdateOrInsertException("desk don't exist"));
-        User user = userRepository.findById(userId).orElseThrow(() -> new  UpdateOrInsertException("user don't exist"));
+        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new ModifyDataException("desk don't exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ModifyDataException("user don't exist"));
         List<UserDto> users = userMapper.toDto(desk.getUsers());
         if (!desk.getUsers().contains(user)){
             deskRepository.addUser(deskId, userId);
             users.add(userMapper.toDto(user));
+        }
+        return users;
+    }
+
+    @Transactional
+    public List<UserDto> removeContributor(long deskId, long userId) {
+        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new ModifyDataException("desk don't exist"));
+        if (userId == desk.getAuthor().getId()) throw new ModifyDataException("can't delete author");
+        User user = userRepository.findById(userId).orElseThrow(() -> new ModifyDataException("user don't exist"));
+        List<UserDto> users = userMapper.toDto(desk.getUsers());
+        if (desk.getUsers().contains(user)){
+            deskRepository.deleteUser(deskId, userId);
+            users.remove(userMapper.toDto(user));
         }
         return users;
     }

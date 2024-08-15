@@ -61,14 +61,12 @@ public class DeskController {
     List<UserDto> addContributor(@PathVariable long deskId, @RequestBody long user){
         return deskService.addContributor(deskId, user);
     }
-//
-//    @Operation(summary = "Удалить участника")
-//    @DeleteMapping("/{deskId}/contributor")
-//    ResponseEntity removeContributor(@PathVariable Integer deskId, @RequestBody String user){
-//        var res = deskService.removeContributor(deskId, user);
-//        return (res) ? new ResponseEntity(HttpStatus.ACCEPTED)
-//                : new ResponseEntity(HttpStatus.BAD_REQUEST);
-//    }
+
+    @Operation(summary = "Удалить участника")
+    @DeleteMapping("/{deskId}/contributor")
+    List<UserDto> removeContributor(@PathVariable long deskId, @RequestBody long user){
+        return deskService.removeContributor(deskId, user);
+    }
 
 
 
