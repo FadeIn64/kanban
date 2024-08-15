@@ -45,4 +45,10 @@ public class ColumnService {
             throw new ModifyDataException(e.getMessage(), e.getCause());
         }
     }
+
+    public ColumnDto rename(long columnId, String newName) {
+        ColumnDto column = this.findById(columnId);
+        column.setName(newName);
+        return columnMapper.toDto(columnRepository.save(columnMapper.toEntity(column)));
+    }
 }

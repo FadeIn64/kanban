@@ -44,15 +44,14 @@ public class ColumnController {
         columnService.remove(columnId);
     }
 
-//    @Operation(summary = "Переименовать колонку")
-//    @PutMapping("/{columnId}")
-//    HttpStatus renameColumn(@PathVariable int columnId,
-//                            @RequestBody
-//                            @Parameter(description = "Новое имя") String newName){
-//        var column = columnService.rename(columnId, newName);
-//        return HttpStatus.ACCEPTED;
-//    }
-//
+    @Operation(summary = "Переименовать колонку")
+    @PutMapping("/{columnId}")
+    ColumnDto renameColumn(@PathVariable long columnId,
+                            @RequestBody
+                            @Parameter(description = "Новое имя") String newName){
+        return columnService.rename(columnId, newName);
+    }
+
 //    @Operation(summary = "передвинуть колонку")
 //    @PutMapping("/{columnId}/move")
 //    ResponseEntity moveColumn(@PathVariable int columnId,
