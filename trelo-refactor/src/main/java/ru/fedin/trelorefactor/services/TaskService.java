@@ -112,4 +112,15 @@ public class TaskService {
         task = taskRepository.save(task);
         return userMapper.toDto(task.getPerformer());
     }
+
+    public void changeColumn(Long taskId, Long columnId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFound("task don't exist"));
+        if (!columnRepository.existsByIdAndDeskId(columnId, task.getDeskId())) {
+            throw new ModifyDataException("column is not in desk");
+        }
+
+        task.setColumnId(columnId);
+        addHistory(task);
+        task = taskRepository.save(task);
+    }
 }

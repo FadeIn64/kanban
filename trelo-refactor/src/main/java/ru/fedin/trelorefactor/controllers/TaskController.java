@@ -83,18 +83,16 @@ public class TaskController {
         taskService.changePerformer(taskId, null);
     }
 
-//    @Operation(summary = "Изменить колнку для задачи")
-//    @PutMapping("/{taskId}/changeColumn")
-//    ResponseEntity changeColumn(@PathVariable int taskId,
-//                            @RequestBody
-//                            @Parameter(description = "Id колонки")
-//                            Integer columnId){
-//
-//        if (taskService.changeColumn(taskId, columnId))
-//            return new ResponseEntity<>(ACCEPTED);
-//        return new ResponseEntity<>(BAD_REQUEST);
-//    }
-//
+    @Operation(summary = "Изменить колнку для задачи")
+    @PutMapping("/{taskId}/changeColumn")
+    void changeColumn(@PathVariable Long taskId,
+                            @RequestBody
+                            @Parameter(description = "Id колонки")
+                            Long columnId){
+
+        taskService.changeColumn(taskId, columnId);
+    }
+
 //    @PostMapping("/search")
 //    Page<DeskTaskDTO> search(@RequestBody SearchRequest request){
 //        log.info("Search: {}", request);
