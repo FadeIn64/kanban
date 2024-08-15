@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.fedin.trelorefactor.dtos.TaskDto;
 import ru.fedin.trelorefactor.services.TaskService;
 
 
@@ -27,15 +28,13 @@ public class TaskController {
 
     private final TaskService taskService;
 
-//    @Operation(summary = "Найти задачу по id", description = "Возвращает всю информацию о задаче")
-//    @GetMapping("/{taskId}")
-//    ResponseEntity getTask(@PathVariable int taskId){
-//        var task = taskService.findById(taskId);
-//        if (task.getId() == 0)
-//            return new ResponseEntity<>(NOT_FOUND);
-//        return new ResponseEntity<>(task, OK);
-//    }
-//
+    @Operation(summary = "Найти задачу по id", description = "Возвращает всю информацию о задаче")
+    @GetMapping("/{taskId}")
+    @ResponseBody
+    TaskDto getTask(@PathVariable int taskId){
+        return taskService.findById(taskId);
+    }
+
 //    @Operation(summary = "Создать задачу")
 //    @PostMapping
 //    @ResponseStatus(CREATED)
