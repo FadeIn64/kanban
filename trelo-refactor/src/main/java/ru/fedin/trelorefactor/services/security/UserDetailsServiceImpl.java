@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
-import ru.fedin.trelorefactor.exceptions.UpdateOrInsertException;
+import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.UsersCredentialsDataRepository;
 import ru.fedin.trelorefactor.requests.RegistrationReq;
@@ -33,9 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDto registerUser(RegistrationReq request){
         UserDto user = userService.createUser(request);
         try {
-            repository.insert(user.getId(), user.getName(), passwordEncoder.encode(request.getPassword())).orElseThrow(UpdateOrInsertException::new);
+            repository.insert(user.getId(), user.getName(), passwordEncoder.encode(request.getPassword())).orElseThrow(ModifyDataException::new);
         }catch (Exception e){
-            throw new UpdateOrInsertException("Insert error", e.getCause());
+            throw new ModifyDataException("Insert error", e.getCause());
         }
 
         return user;

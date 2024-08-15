@@ -1,12 +1,11 @@
 package ru.fedin.trelorefactor.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
-import ru.fedin.trelorefactor.exceptions.UpdateOrInsertException;
+import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 
 import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
@@ -19,10 +18,10 @@ public class Advice {
         return e.getMessage();
     }
 
-    @ExceptionHandler(UpdateOrInsertException.class)
+    @ExceptionHandler(ModifyDataException.class)
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    public String notFound(UpdateOrInsertException e){
+    public String notFound(ModifyDataException e){
         return e.getMessage();
     }
 
