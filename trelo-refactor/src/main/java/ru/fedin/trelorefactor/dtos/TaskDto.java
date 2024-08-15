@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.fedin.trelorefactor.eintites.enums.Importance;
+import ru.fedin.trelorefactor.validation.DataIntervalCheck;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,6 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
+@DataIntervalCheck(
+        startDate = "startDate",
+        endDate = "endDate"
+)
 public class TaskDto implements Serializable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
