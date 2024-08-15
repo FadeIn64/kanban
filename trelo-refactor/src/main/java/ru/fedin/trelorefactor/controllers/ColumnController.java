@@ -52,15 +52,11 @@ public class ColumnController {
         return columnService.rename(columnId, newName);
     }
 
-//    @Operation(summary = "передвинуть колонку")
-//    @PutMapping("/{columnId}/move")
-//    ResponseEntity moveColumn(@PathVariable int columnId,
-//                          @Parameter(description = "Смещение колнки. Значения меньше 0 двигуют уолонку к предыдущим, большее - к следующим")
-//                          @RequestParam int offset){
-//        var columns = columnService.move(columnId, offset);
-//        if (columns.size() == 0)
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        return ResponseEntity.ok(columns);
-//    }
+    @Operation(summary = "передвинуть колонку")
+    @PutMapping("/{columnId}/move")
+    ColumnDto moveColumn(@PathVariable long columnId,
+                          @RequestParam int order){
+        return columnService.move(columnId, order);
+    }
 
 }

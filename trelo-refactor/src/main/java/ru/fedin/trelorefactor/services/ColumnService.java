@@ -51,4 +51,10 @@ public class ColumnService {
         column.setName(newName);
         return columnMapper.toDto(columnRepository.save(columnMapper.toEntity(column)));
     }
+
+    public ColumnDto move(long columnId, int order) {
+        ColumnDto column = this.findById(columnId);
+        column.setOrder(order);
+        return columnMapper.toDto(columnRepository.save(columnMapper.toEntity(column)));
+    }
 }
