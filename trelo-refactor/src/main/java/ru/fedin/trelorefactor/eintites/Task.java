@@ -64,14 +64,20 @@ public class Task {
     private User performer;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "desk_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "desk_id", nullable = false, updatable = false, insertable = false)
     private Desk desk;
 
+    @Column(name = "desk_id")
+    private long deskId;
+
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "column_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "column_id", nullable = false, updatable = false, insertable = false)
     private ColumnEntity column;
+
+    @Column(name = "column_id")
+    private long columnId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "task_id")
