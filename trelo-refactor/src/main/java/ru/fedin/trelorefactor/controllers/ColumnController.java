@@ -35,16 +35,15 @@ public class ColumnController {
     public ColumnDto getColumn(@PathVariable long columnId){
         return columnService.findById(columnId);
     }
-//
-//    @Operation(summary = "Удалить колонку",
-//    description = "Удаляет вместе с задачами")
-//    @DeleteMapping("/{columnId}")
-//    ResponseEntity removeColumn(@PathVariable int columnId){
-//        if (columnService.removeColumn(columnId))
-//            return new ResponseEntity<>(OK);
-//        return new ResponseEntity<>(BAD_REQUEST);
-//    }
-//
+
+    @Operation(summary = "Удалить колонку",
+    description = "Удаляет вместе с задачами")
+    @DeleteMapping("/{columnId}")
+    @ResponseStatus(ACCEPTED)
+    void removeColumn(@PathVariable long columnId){
+        columnService.remove(columnId);
+    }
+
 //    @Operation(summary = "Переименовать колонку")
 //    @PutMapping("/{columnId}")
 //    HttpStatus renameColumn(@PathVariable int columnId,
