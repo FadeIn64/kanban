@@ -19,9 +19,9 @@ public class DefaultColumnCreatorImpl implements DefaultColumnCreator{
     @Override
     public List<ColumnEntity> createDefault(Desk desk) {
         List<ColumnEntity> defaults = new ArrayList<>();
-        defaults.add(ColumnEntity.builder().desk(desk).order(1).name("Todo").build());
-        defaults.add(ColumnEntity.builder().desk(desk).order(2).name("Working").build());
-        defaults.add(ColumnEntity.builder().desk(desk).order(3).name("Finished").build());
+        defaults.add(ColumnEntity.builder().deskId(desk.getId()).order(1).name("Todo").build());
+        defaults.add(ColumnEntity.builder().deskId(desk.getId()).order(2).name("Working").build());
+        defaults.add(ColumnEntity.builder().deskId(desk.getId()).order(3).name("Finished").build());
 
         return columnRepository.saveAll(defaults);
     }
