@@ -37,8 +37,10 @@ public class DeskService {
     @Transactional
     public DeskDto create(DeskDto dto){
         Desk entity = deskMapper.toEntity(dto);
+        User author = userRepository.findById(entity.getAuthor().getId()).orElseThrow(() -> new ModifyDataException("author don't exist"));
+        entity.setAuthor(author);
+        entity.getUsers().add(author);
         try {
-            entity.getUsers().add(User.builder().id(dto.getAuthor().getId()).build());
             entity = deskRepository.save(entity);
         }
         catch (Exception e){
