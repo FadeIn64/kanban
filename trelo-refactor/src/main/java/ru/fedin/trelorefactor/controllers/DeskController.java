@@ -24,14 +24,14 @@ public class DeskController {
 
     @Operation(summary = "Найти доску по id")
     @GetMapping("/{deskId}")
-    DeskDto getDesk(@PathVariable @Parameter(description = "Id Доски") long deskId){
+    public DeskDto getDesk(@PathVariable @Parameter(description = "Id Доски") long deskId){
         return deskService.findById(deskId);
     }
 
     @Operation(summary = "Создать доску",
             description = "Возвращает новую доску, включая всю информацию о колонках, задачах, участников.")
     @PostMapping
-    DeskDto createDesk(@RequestBody DeskDto desk){
+    public DeskDto createDesk(@RequestBody DeskDto desk){
         desk.setId(0L);
         return deskService.create(desk);
     }
@@ -41,7 +41,7 @@ public class DeskController {
     @DeleteMapping("/{deskId}")
     @ResponseBody
     @ResponseStatus(ACCEPTED)
-    void deleteDesk(@PathVariable long deskId){
+    public void deleteDesk(@PathVariable long deskId){
         deskService.delete(deskId);
     }
 
@@ -49,7 +49,7 @@ public class DeskController {
     @PutMapping("/{deskId}")
     @ResponseBody
     @ResponseStatus(ACCEPTED)
-    boolean rename(@PathVariable long deskId,
+    public boolean rename(@PathVariable long deskId,
                       @RequestBody
                       @Parameter(description = "Новое имя") String newName){
         return deskService.rename(deskId, newName);
@@ -58,13 +58,13 @@ public class DeskController {
     @Operation(summary = "Добавить нового участника",
     description = "Возвращает список участников")
     @PostMapping("/{deskId}/contributor")
-    List<UserDto> addContributor(@PathVariable long deskId, @RequestBody long user){
+    public List<UserDto> addContributor(@PathVariable long deskId, @RequestBody long user){
         return deskService.addContributor(deskId, user);
     }
 
     @Operation(summary = "Удалить участника")
     @DeleteMapping("/{deskId}/contributor")
-    List<UserDto> removeContributor(@PathVariable long deskId, @RequestBody long user){
+    public List<UserDto> removeContributor(@PathVariable long deskId, @RequestBody long user){
         return deskService.removeContributor(deskId, user);
     }
 

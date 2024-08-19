@@ -58,7 +58,7 @@ public class TaskController {
     @PutMapping("/{taskId}")
     @ResponseBody
     @ResponseStatus(ACCEPTED)
-    TaskDto changeTask(@RequestBody @Valid TaskDto task, @PathVariable Long taskId){
+    public TaskDto changeTask(@RequestBody @Valid TaskDto task, @PathVariable Long taskId){
         task.setId(taskId);
         return taskService.change(task);
 
@@ -69,7 +69,7 @@ public class TaskController {
     @PostMapping("/{taskId}/performer")
     @ResponseBody
     @ResponseStatus(ACCEPTED)
-    UserDto changePerformer(@PathVariable long taskId,
+    public UserDto changePerformer(@PathVariable long taskId,
                             @RequestBody
                                 @Parameter(description = "Новый исполнитель") Long performer){
         return taskService.changePerformer(taskId, performer);
@@ -79,7 +79,7 @@ public class TaskController {
             description = "Возвращает список исполнителей")
     @DeleteMapping("/{taskId}/performer")
     @ResponseStatus(ACCEPTED)
-    void removePerformer(@PathVariable long taskId){
+    public void removePerformer(@PathVariable long taskId){
         taskService.changePerformer(taskId, null);
     }
 
@@ -103,7 +103,7 @@ public class TaskController {
     @GetMapping("/{taskId}/history")
     @ResponseBody
     @ResponseStatus(OK)
-    List<HistoryDto> getHistory(
+    public List<HistoryDto> getHistory(
             @PathVariable
             @Parameter(description = "Индефикатор задачи")
             Long taskId,

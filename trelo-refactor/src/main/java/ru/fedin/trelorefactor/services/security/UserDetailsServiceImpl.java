@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.UserDto;
-import ru.fedin.trelorefactor.exceptions.EntityNotFound;
+import ru.fedin.trelorefactor.exceptions.EntityNotFoundException;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.entities.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.UsersCredentialsDataRepository;
@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username).orElseThrow(EntityNotFound::new);
+        return repository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional

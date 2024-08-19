@@ -8,7 +8,7 @@ import ru.fedin.trelorefactor.dtos.DeskDto;
 import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.eintites.Desk;
 import ru.fedin.trelorefactor.eintites.User;
-import ru.fedin.trelorefactor.exceptions.EntityNotFound;
+import ru.fedin.trelorefactor.exceptions.EntityNotFoundException;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.entities.DeskMapper;
 import ru.fedin.trelorefactor.mappers.entities.UserMapper;
@@ -31,7 +31,7 @@ public class DeskService {
 
 
     public DeskDto findById(long id){
-        return deskMapper.toDto(deskRepository.findById(id).orElseThrow(() -> new EntityNotFound("desk not found")));
+        return deskMapper.toDto(deskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("desk not found")));
     }
 
     @Transactional

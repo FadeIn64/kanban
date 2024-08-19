@@ -40,13 +40,13 @@ public class ColumnController {
     description = "Удаляет вместе с задачами")
     @DeleteMapping("/{columnId}")
     @ResponseStatus(ACCEPTED)
-    void removeColumn(@PathVariable long columnId){
+    public void removeColumn(@PathVariable long columnId){
         columnService.remove(columnId);
     }
 
     @Operation(summary = "Переименовать колонку")
     @PutMapping("/{columnId}")
-    ColumnDto renameColumn(@PathVariable long columnId,
+    public ColumnDto renameColumn(@PathVariable long columnId,
                             @RequestBody
                             @Parameter(description = "Новое имя") String newName){
         return columnService.rename(columnId, newName);
@@ -54,7 +54,7 @@ public class ColumnController {
 
     @Operation(summary = "передвинуть колонку")
     @PutMapping("/{columnId}/move")
-    ColumnDto moveColumn(@PathVariable long columnId,
+    public ColumnDto moveColumn(@PathVariable long columnId,
                           @RequestParam int order){
         return columnService.move(columnId, order);
     }

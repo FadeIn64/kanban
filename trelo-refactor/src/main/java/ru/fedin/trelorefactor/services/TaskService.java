@@ -9,7 +9,7 @@ import ru.fedin.trelorefactor.dtos.TaskDto;
 import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.eintites.History;
 import ru.fedin.trelorefactor.eintites.Task;
-import ru.fedin.trelorefactor.exceptions.EntityNotFound;
+import ru.fedin.trelorefactor.exceptions.EntityNotFoundException;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.entities.HistoryMapper;
 import ru.fedin.trelorefactor.mappers.entities.TaskMapper;
@@ -38,7 +38,7 @@ public class TaskService {
 
     public TaskDto findById(long taskId) {
         return taskMapper.toDto(taskRepository.findById(taskId)
-                .orElseThrow(()-> new EntityNotFound("task don't exist")));
+                .orElseThrow(()-> new EntityNotFoundException("task don't exist")));
     }
 
     @Transactional
@@ -95,14 +95,14 @@ public class TaskService {
 
     public List<HistoryDto> findAllHistoryByTaskAndChangeDate(Long taskId, LocalDateTime from, LocalDateTime to) {
         if (!taskRepository.existsById(taskId)) {
-            throw new EntityNotFound("task don't exist");
+            throw new EntityNotFoundException("task don't exist");
         }
         return historyMapper.toDto(historyRepository.findAllByTaskAndChangeDateBetween(Task.builder().id(taskId).build(), from, to));
     }
 
     @Transactional
     public UserDto changePerformer(long taskId, Long performer) {
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFound("task don't exist"));
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("task don't exist"));
         if (performer != null // для более удобной очистки ползователя
                 && deskRepository.existsContributor(task.getDeskId(), performer) < 1) {
             throw new ModifyDataException("performer is not a contributor");
@@ -114,7 +114,7 @@ public class TaskService {
     }
 
     public void changeColumn(Long taskId, Long columnId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFound("task don't exist"));
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("task don't exist"));
         if (!columnRepository.existsByIdAndDeskId(columnId, task.getDeskId())) {
             throw new ModifyDataException("column is not in desk");
         }

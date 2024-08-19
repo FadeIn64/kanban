@@ -18,12 +18,12 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto register(@RequestBody @Valid RegistrationReq request){
+    public UserDto register(@RequestBody @Valid RegistrationReq request){
         return userDetailsService.registerUser(request);
     }
 
     @GetMapping("/{username}")
-    String get(@PathVariable String username){
+    public String get(@PathVariable String username){
         return userDetailsService.loadUserByUsername(username).getUsername();
     }
 
