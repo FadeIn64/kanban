@@ -1,11 +1,12 @@
 package ru.fedin.trelorefactor.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserDto{
     Long id;
