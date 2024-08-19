@@ -10,8 +10,8 @@ import ru.fedin.trelorefactor.eintites.Desk;
 import ru.fedin.trelorefactor.eintites.User;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
-import ru.fedin.trelorefactor.mappers.DeskMapper;
-import ru.fedin.trelorefactor.mappers.UserMapper;
+import ru.fedin.trelorefactor.mappers.entities.DeskMapper;
+import ru.fedin.trelorefactor.mappers.entities.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
 import ru.fedin.trelorefactor.repositories.jpa.UserRepository;
 

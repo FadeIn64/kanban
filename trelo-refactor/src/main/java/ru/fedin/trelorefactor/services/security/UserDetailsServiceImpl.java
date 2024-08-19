@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.UserDto;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
-import ru.fedin.trelorefactor.mappers.UserMapper;
+import ru.fedin.trelorefactor.mappers.entities.UserMapper;
 import ru.fedin.trelorefactor.repositories.jpa.UsersCredentialsDataRepository;
 import ru.fedin.trelorefactor.requests.RegistrationReq;
 import ru.fedin.trelorefactor.services.UserService;

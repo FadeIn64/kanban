@@ -9,7 +9,7 @@ import ru.fedin.trelorefactor.dtos.ColumnDto;
 import ru.fedin.trelorefactor.eintites.ColumnEntity;
 import ru.fedin.trelorefactor.exceptions.EntityNotFound;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
-import ru.fedin.trelorefactor.mappers.ColumnMapper;
+import ru.fedin.trelorefactor.mappers.entities.ColumnMapper;
 import ru.fedin.trelorefactor.repositories.jpa.ColumnEntityRepository;
 
 @Service

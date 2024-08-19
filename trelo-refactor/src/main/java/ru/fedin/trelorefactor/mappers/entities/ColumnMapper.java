@@ -1,9 +1,9 @@
-package ru.fedin.trelorefactor.mappers;
+package ru.fedin.trelorefactor.mappers.entities;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import ru.fedin.trelorefactor.dtos.ColumnDto;
 import ru.fedin.trelorefactor.eintites.ColumnEntity;
+import ru.fedin.trelorefactor.mappers.DataMapper;
 
 import java.util.Collection;
 import java.util.List;
