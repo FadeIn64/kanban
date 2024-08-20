@@ -25,6 +25,13 @@ public enum DeskAction implements AbstractAction {
             return deskService.create(deskDto);
         }
     },
+    REMOVE(){
+        @Override
+        public DeskDto action(DeskDto deskDto, DeskService deskService) {
+            deskService.delete(deskDto.getId());
+            return deskDto;
+        }
+    },
     RENAME(){
         @Override
         public DeskDto action(DeskDto deskDto, DeskService deskService) {
