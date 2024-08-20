@@ -6,10 +6,13 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelorefactor.dtos.DeskDto;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
+import ru.fedin.trelorefactor.mappers.entities.DeskMapper;
+import ru.fedin.trelorefactor.mappers.models.DeskModelMapper;
 import ru.fedin.trelorefactor.messaging.DeskAction;
 import ru.fedin.trelorefactor.messaging.Message;
 import ru.fedin.trelorefactor.messaging.MessageStatus;
 import ru.fedin.trelorefactor.messaging.Status;
+import ru.fedin.trelorefactor.models.DeskModel;
 import ru.fedin.trelorefactor.services.DeskService;
 
 @Component
@@ -18,31 +21,38 @@ import ru.fedin.trelorefactor.services.DeskService;
 public class DeskListener {
 
     private final DeskService deskService;
+    private final DeskModelMapper deskMapper;
 
     @KafkaListener(topics = "${kafka.topic.desk}",
             groupId = "server",
             containerFactory = "deskKafkaListenerContainerFactory")
-    void listener( Message<DeskDto, DeskAction> message){
+    void listener( Message<DeskModel, DeskAction> message){
         log.info("Received Desk message: {}", message);
 
-        Message<DeskDto, DeskAction> receive = new Message<>();
-        receive.setAction(DeskAction.CACHE);
+
+        Message<DeskModel, DeskAction> reply = new Message<>();
+        if (message.getAction().name().equals(DeskAction.REMOVE.name())){
+            reply.setAction(DeskAction.REMOVE);
+        }
+        else {
+            reply.setAction(DeskAction.CACHE);
+        }
 
         try {
-            receive.setMessage(message.getAction().action(message.getMessage(), deskService));
-            receive.setStatus(new MessageStatus(Status.OK, "Ok"));
+            reply.setMessage(deskMapper.toEntity(message.getAction().action(deskMapper.toDto(message.getMessage()), deskService)));
+            reply.setStatus(new MessageStatus(Status.OK, "Ok"));
         }
         catch (ModifyDataException e){
             log.error("ModifyDataException", e);
-            receive.setMessage(message.getMessage());
-            receive.setStatus(new MessageStatus(Status.BAD_REQUEST, "ModifyDataException: " + e.getMessage()));
+            reply.setMessage(message.getMessage());
+            reply.setStatus(new MessageStatus(Status.BAD_REQUEST, "ModifyDataException: " + e.getMessage()));
         }
         catch (Exception e){
             log.error("Exception", e);
-            receive.setStatus(new MessageStatus(Status.ERROR, e.getClass().getName() + ": " + e.getMessage()));
+            reply.setStatus(new MessageStatus(Status.ERROR, e.getClass().getName() + ": " + e.getMessage()));
         }
 
-        log.info("Received Desk received: {}", receive);
+        log.info("Reply Desk received: {}", reply);
 
     }
 

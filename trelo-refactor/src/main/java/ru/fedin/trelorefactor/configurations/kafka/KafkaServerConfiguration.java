@@ -18,6 +18,7 @@ import ru.fedin.trelorefactor.dtos.DeskDto;
 import ru.fedin.trelorefactor.dtos.TaskDto;
 import ru.fedin.trelorefactor.messaging.DeskAction;
 import ru.fedin.trelorefactor.messaging.Message;
+import ru.fedin.trelorefactor.models.DeskModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,8 +45,8 @@ public class KafkaServerConfiguration {
         }
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, Message<DeskDto, DeskAction>> deskKafkaListenerContainerFactory() {
-            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<Message<DeskDto, DeskAction>>() {});
+        public ConcurrentKafkaListenerContainerFactory<UUID, Message<DeskModel, DeskAction>> deskKafkaListenerContainerFactory() {
+            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<Message<DeskModel, DeskAction>>() {});
         }
     }
 
