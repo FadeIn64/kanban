@@ -32,7 +32,7 @@ public class ColumnListener {
             reply.setAction(ColumnAction.CACHE);
         }
 
-        if (message.getMessage().getId() == null || 0L == message.getMessage().getId()){
+        if (message.getMessage().getId() == null){
             reply.setStatus(new MessageStatus(Status.ERROR, "id equals null"));
             reply.setMessage(message.getMessage());
             return;

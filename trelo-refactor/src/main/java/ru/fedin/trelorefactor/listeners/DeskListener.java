@@ -38,7 +38,7 @@ public class DeskListener {
             reply.setAction(DeskAction.CACHE);
         }
 
-        if (message.getMessage().getId() == null || 0L == message.getMessage().getId()){
+        if (message.getMessage().getId() == null){
             reply.setStatus(new MessageStatus(Status.ERROR, "id equals null"));
             reply.setMessage(message.getMessage());
             return;
