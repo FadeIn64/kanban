@@ -11,13 +11,6 @@ import java.util.List;
 @Slf4j
 public enum DeskAction implements AbstractAction {
 
-    LOG() {
-        @Override
-        public DeskDto action(DeskDto deskDto, DeskService deskService) {
-            log.info("Received Desk Message: {}", deskDto);
-            return deskDto;
-        }
-    },
     CREATE(){
         @Override
         public DeskDto action(DeskDto deskDto, DeskService deskService) {
