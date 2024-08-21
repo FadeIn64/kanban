@@ -19,7 +19,7 @@ public class ColumnListener {
 
     @KafkaListener(topics = "${kafka.topic.column}",
             groupId = "server",
-            containerFactory = "deskKafkaListenerContainerFactory")
+            containerFactory = "columnKafkaListenerContainerFactory")
     public void listener( Message<ColumnModel, ColumnAction> message){
         log.info("Received Column message: {}", message);
 

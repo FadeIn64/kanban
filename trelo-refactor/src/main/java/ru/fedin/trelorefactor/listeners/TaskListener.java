@@ -20,7 +20,7 @@ public class TaskListener {
 
     @KafkaListener(topics = "${kafka.topic.task}",
             groupId = "server",
-            containerFactory = "deskKafkaListenerContainerFactory")
+            containerFactory = "taskKafkaListenerContainerFactory")
     public void listener( Message<TaskModel, TaskAction> message){
         log.info("Received Task message: {}", message);
 
