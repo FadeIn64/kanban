@@ -26,7 +26,7 @@ public class DeskListener {
     @KafkaListener(topics = "${kafka.topic.desk}",
             groupId = "server",
             containerFactory = "deskKafkaListenerContainerFactory")
-    void listener( Message<DeskModel, DeskAction> message){
+    public void listener( Message<DeskModel, DeskAction> message){
         log.info("Received Desk message: {}", message);
 
 
@@ -36,6 +36,12 @@ public class DeskListener {
         }
         else {
             reply.setAction(DeskAction.CACHE);
+        }
+
+        if (message.getMessage().getId() == null || 0L == message.getMessage().getId()){
+            reply.setStatus(new MessageStatus(Status.ERROR, "id equals null"));
+            reply.setMessage(message.getMessage());
+            return;
         }
 
         try {
