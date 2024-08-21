@@ -26,6 +26,7 @@ public class ColumnController {
     @ResponseStatus(CREATED)
     @ResponseBody
     public void create(@PathVariable long deskId, @RequestBody @Valid ColumnDto column){
+        column.setId(0L);
         columnService.create(column, deskId);
     }
 

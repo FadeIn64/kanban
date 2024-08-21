@@ -39,6 +39,7 @@ public class TaskController {
     @ResponseStatus(CREATED)
     @ResponseBody
     public void createTask(@RequestBody @Valid TaskDto task, @PathVariable long deskId, @PathVariable long columnId){
+        task.setId(0L);
         task.setDeskId(deskId);
         task.setColumnId(columnId);
         taskService.create(task);
