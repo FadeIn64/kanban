@@ -37,6 +37,7 @@ public class ColumnService {
         }
     }
 
+    @Transactional
     public void remove(long columnId) {
         try {
             columnRepository.deleteById(columnId);
@@ -46,15 +47,17 @@ public class ColumnService {
         }
     }
 
+    @Transactional
     public ColumnDto rename(long columnId, String newName) {
-        ColumnDto column = this.findById(columnId);
+        ColumnEntity column = columnRepository.findById(columnId).orElseThrow(()->new ModifyDataException("column don't exist"));
         column.setName(newName);
-        return columnMapper.toDto(columnRepository.save(columnMapper.toEntity(column)));
+        return columnMapper.toDto(columnRepository.save(column));
     }
 
+    @Transactional
     public ColumnDto move(long columnId, int order) {
-        ColumnDto column = this.findById(columnId);
+        ColumnEntity column = columnRepository.findById(columnId).orElseThrow(()->new ModifyDataException("column don't exist"));
         column.setOrder(order);
-        return columnMapper.toDto(columnRepository.save(columnMapper.toEntity(column)));
+        return columnMapper.toDto(columnRepository.save(column));
     }
 }
