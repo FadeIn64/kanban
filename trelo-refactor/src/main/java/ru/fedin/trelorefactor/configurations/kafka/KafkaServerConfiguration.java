@@ -13,12 +13,13 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.fedin.trelorefactor.dtos.ColumnDto;
-import ru.fedin.trelorefactor.dtos.DeskDto;
-import ru.fedin.trelorefactor.dtos.TaskDto;
+import ru.fedin.trelorefactor.messaging.ColumnAction;
 import ru.fedin.trelorefactor.messaging.DeskAction;
 import ru.fedin.trelorefactor.messaging.Message;
+import ru.fedin.trelorefactor.messaging.TaskAction;
+import ru.fedin.trelorefactor.models.ColumnModel;
 import ru.fedin.trelorefactor.models.DeskModel;
+import ru.fedin.trelorefactor.models.TaskModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +66,8 @@ public class KafkaServerConfiguration {
 
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, ColumnDto> columnKafkaListenerContainerFactory() {
-            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<ColumnDto>() {});
+        public ConcurrentKafkaListenerContainerFactory<UUID, Message<ColumnModel, ColumnAction>> columnKafkaListenerContainerFactory() {
+            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<Message<ColumnModel, ColumnAction>>() {});
         }
     }
 
@@ -85,8 +86,8 @@ public class KafkaServerConfiguration {
         }
 
         @Bean
-        public ConcurrentKafkaListenerContainerFactory<UUID, TaskDto> taskKafkaListenerContainerFactory() {
-            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<TaskDto>() {});
+        public ConcurrentKafkaListenerContainerFactory<UUID, Message<TaskModel, TaskAction>> taskKafkaListenerContainerFactory() {
+            return KafkaServerConfiguration.this.abstractKafkaListenerContainerFactory(new TypeReference<Message<TaskModel, TaskAction>>() {});
         }
     }
 
