@@ -3,6 +3,7 @@ package ru.fedin.trelorefactor.listeners;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class TaskListener {
 
     private final TaskService taskService;
     private final TaskModelMapper taskMapper;
+    private final KafkaTemplate<UUID, Message<TaskModel, TaskAction>> taskTemplate;
 
     @KafkaListener(topics = "${kafka.topic.task}",
             groupId = "server",
@@ -40,6 +42,7 @@ public class TaskListener {
         if (message.getMessage().getId() == null){
             reply.setStatus(new MessageStatus(Status.ERROR, "id equals null"));
             reply.setMessage(message.getMessage());
+            send(reply, key);
             return;
         }
 
@@ -54,11 +57,15 @@ public class TaskListener {
         }
         catch (Exception e){
             log.error("Exception", e);
+            reply.setMessage(message.getMessage());
             reply.setStatus(new MessageStatus(Status.ERROR, e.getClass().getName() + ": " + e.getMessage()));
         }
+        send(reply, key);
+    }
 
-        log.info("Reply Task received: {}", reply);
-
+    private void send(Message<TaskModel, TaskAction> message, UUID key){
+        taskTemplate.sendDefault(key, message);
+        log.info("Reply Task message: {}", message);
     }
 
 }
