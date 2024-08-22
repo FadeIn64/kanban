@@ -80,4 +80,8 @@ public class TaskService {
     public TaskModel save(TaskModel taskModel){
         return taskRepository.save(taskModel);
     }
+
+    public void remove(TaskModel model) {
+        taskRepository.deleteById(model.getId());
+    }
 }
