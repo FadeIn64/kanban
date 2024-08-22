@@ -11,7 +11,9 @@ import ru.fedin.treloclient.messaging.DeskAction;
 import ru.fedin.treloclient.messaging.Message;
 import ru.fedin.treloclient.messaging.MessageStatus;
 import ru.fedin.treloclient.messaging.Status;
+import ru.fedin.treloclient.models.ColumnModel;
 import ru.fedin.treloclient.models.DeskModel;
+import ru.fedin.treloclient.models.TaskModel;
 import ru.fedin.treloclient.models.UserModel;
 import ru.fedin.treloclient.repositories.redis.ColumnRepository;
 import ru.fedin.treloclient.repositories.redis.DeskRepository;
@@ -84,5 +86,11 @@ public class DeskService {
         taskRepository.saveAll(deskModel.getTasks());
         columnRepository.saveAll(deskModel.getColumns());
         return deskRepository.save(deskModel);
+    }
+
+    public void remove(DeskModel model) {
+        taskRepository.deleteAllById(model.getTasks().stream().map(TaskModel::getId).toList());
+        columnRepository.deleteAllById(model.getColumns().stream().map(ColumnModel::getId).toList());
+        deskRepository.deleteById(model.getId());
     }
 }
