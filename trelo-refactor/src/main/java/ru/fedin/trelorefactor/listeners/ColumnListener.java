@@ -3,6 +3,7 @@ package ru.fedin.trelorefactor.listeners;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class ColumnListener {
     private final ColumnService columnService;
     private final ColumnModelMapper columnMapper;
+    private final KafkaTemplate<UUID, Message<ColumnModel, ColumnAction>> columnTemplate;
 
     @KafkaListener(topics = "${kafka.topic.column}",
             groupId = "server",
@@ -39,6 +41,7 @@ public class ColumnListener {
         if (message.getMessage().getId() == null){
             reply.setStatus(new MessageStatus(Status.ERROR, "id equals null"));
             reply.setMessage(message.getMessage());
+            send(reply, key);
             return;
         }
 
@@ -53,10 +56,16 @@ public class ColumnListener {
         }
         catch (Exception e){
             log.error("Exception", e);
+            reply.setMessage(message.getMessage());
             reply.setStatus(new MessageStatus(Status.ERROR, e.getClass().getName() + ": " + e.getMessage()));
         }
 
-        log.info("Reply Column received: {}", reply);
+        send(reply, key);
 
+    }
+
+    private void send(Message<ColumnModel, ColumnAction> message, UUID key){
+        log.info("Reply Column received: {}", message);
+        columnTemplate.sendDefault(key, message);
     }
 }
