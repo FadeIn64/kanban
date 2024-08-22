@@ -13,6 +13,9 @@ import ru.fedin.treloclient.messaging.MessageStatus;
 import ru.fedin.treloclient.messaging.Status;
 import ru.fedin.treloclient.models.DeskModel;
 import ru.fedin.treloclient.models.UserModel;
+import ru.fedin.treloclient.repositories.redis.ColumnRepository;
+import ru.fedin.treloclient.repositories.redis.DeskRepository;
+import ru.fedin.treloclient.repositories.redis.TaskRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,9 @@ public class DeskService {
     private final RestClient restClient;
     private final KafkaTemplate<UUID, Message<DeskModel, DeskAction>> deskTemplate;
     private final DeskModelMapper deskMapper;
+    private final TaskRepository taskRepository;
+    private final ColumnRepository columnRepository;
+    private final DeskRepository deskRepository;
 
     public DeskDto findById(long deskId) {
         return deskMapper.toDto(findModelById(deskId));
@@ -72,5 +78,11 @@ public class DeskService {
         message.setStatus(new MessageStatus(Status.OK, "no reason"));
         UUID uuid = Generators.timeBasedGenerator().generate();
         deskTemplate.sendDefault(uuid, message);
+    }
+
+    public DeskModel save(DeskModel deskModel){
+        taskRepository.saveAll(deskModel.getTasks());
+        columnRepository.saveAll(deskModel.getColumns());
+        return deskRepository.save(deskModel);
     }
 }

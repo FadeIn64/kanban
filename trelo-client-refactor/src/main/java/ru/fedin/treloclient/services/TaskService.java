@@ -13,6 +13,7 @@ import ru.fedin.treloclient.messaging.*;
 import ru.fedin.treloclient.models.DeskModel;
 import ru.fedin.treloclient.models.TaskModel;
 import ru.fedin.treloclient.models.UserModel;
+import ru.fedin.treloclient.repositories.redis.TaskRepository;
 
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class TaskService {
     private final RestClient restClient;
     private final KafkaTemplate<UUID, Message<TaskModel, TaskAction>> taskTemplate;
     private final TaskModelMapper taskMapper;
+    private final TaskRepository taskRepository;
 
 
 
@@ -73,5 +75,9 @@ public class TaskService {
         TaskModel model = findModelById(taskId);
         model.setColumnId(columnId);
         send(model, TaskAction.CHANGE_COLUMN);
+    }
+
+    public TaskModel save(TaskModel taskModel){
+        return taskRepository.save(taskModel);
     }
 }

@@ -13,6 +13,7 @@ import ru.fedin.treloclient.messaging.Message;
 import ru.fedin.treloclient.messaging.MessageStatus;
 import ru.fedin.treloclient.messaging.Status;
 import ru.fedin.treloclient.models.ColumnModel;
+import ru.fedin.treloclient.repositories.redis.ColumnRepository;
 
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ public class ColumnService {
     private final RestClient restClient;
     private final KafkaTemplate<UUID, Message<ColumnModel, ColumnAction>> columnTemplate;
     private final ColumnModelMapper columnMapper;
+    private final ColumnRepository columnRepository;
 
 
     public void create(@Valid ColumnDto column, long deskId) {
@@ -66,5 +68,8 @@ public class ColumnService {
         message.setStatus(new MessageStatus(Status.OK, "no reason"));
         UUID uuid = Generators.timeBasedGenerator().generate();
         columnTemplate.sendDefault(uuid, message);
+    }
+    public ColumnModel save(ColumnModel columnModel) {
+        return columnRepository.save(columnModel);
     }
 }
