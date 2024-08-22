@@ -32,7 +32,7 @@ public class TaskListener {
 
 
         Message<TaskModel, TaskAction> reply = new Message<>();
-        if (message.getAction().name().equals(DeskAction.REMOVE.name())){
+        if (message.getAction().name().equals(TaskAction.REMOVE.name())){
             reply.setAction(TaskAction.REMOVE);
         }
         else {
