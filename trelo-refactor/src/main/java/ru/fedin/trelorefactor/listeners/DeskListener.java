@@ -3,6 +3,8 @@ package ru.fedin.trelorefactor.listeners;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelorefactor.dtos.DeskDto;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
@@ -15,6 +17,8 @@ import ru.fedin.trelorefactor.messaging.Status;
 import ru.fedin.trelorefactor.models.DeskModel;
 import ru.fedin.trelorefactor.services.DeskService;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -26,7 +30,7 @@ public class DeskListener {
     @KafkaListener(topics = "${kafka.topic.desk}",
             groupId = "server",
             containerFactory = "deskKafkaListenerContainerFactory")
-    public void listener( Message<DeskModel, DeskAction> message){
+    public void listener( Message<DeskModel, DeskAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key){
         log.info("Received Desk message: {}", message);
 
 

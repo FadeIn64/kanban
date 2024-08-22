@@ -3,12 +3,16 @@ package ru.fedin.trelorefactor.listeners;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.models.TaskModelMapper;
 import ru.fedin.trelorefactor.messaging.*;
 import ru.fedin.trelorefactor.models.TaskModel;
 import ru.fedin.trelorefactor.services.TaskService;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +25,7 @@ public class TaskListener {
     @KafkaListener(topics = "${kafka.topic.task}",
             groupId = "server",
             containerFactory = "taskKafkaListenerContainerFactory")
-    public void listener( Message<TaskModel, TaskAction> message){
+    public void listener( Message<TaskModel, TaskAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key){
         log.info("Received Task message: {}", message);
 
 

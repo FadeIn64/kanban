@@ -3,12 +3,16 @@ package ru.fedin.trelorefactor.listeners;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import ru.fedin.trelorefactor.exceptions.ModifyDataException;
 import ru.fedin.trelorefactor.mappers.models.ColumnModelMapper;
 import ru.fedin.trelorefactor.messaging.*;
 import ru.fedin.trelorefactor.models.ColumnModel;
 import ru.fedin.trelorefactor.services.ColumnService;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +24,7 @@ public class ColumnListener {
     @KafkaListener(topics = "${kafka.topic.column}",
             groupId = "server",
             containerFactory = "columnKafkaListenerContainerFactory")
-    public void listener( Message<ColumnModel, ColumnAction> message){
+    public void listener( Message<ColumnModel, ColumnAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key){
         log.info("Received Column message: {}", message);
 
 
