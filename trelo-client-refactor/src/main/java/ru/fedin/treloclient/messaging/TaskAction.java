@@ -12,7 +12,7 @@ public enum TaskAction implements AbstractAction {
     REMOVE(){
         @Override
         public TaskModel action(TaskModel model, TaskService taskService) {
-            taskService.remove(model);
+            taskService.removeFromCache(model);
             return null;
         }
     },

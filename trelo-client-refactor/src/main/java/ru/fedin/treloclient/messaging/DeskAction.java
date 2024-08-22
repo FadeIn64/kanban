@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import ru.fedin.treloclient.models.DeskModel;
 import ru.fedin.treloclient.services.DeskService;
 
-
-import java.util.List;
-
 @Slf4j
 public enum DeskAction implements AbstractAction {
 
@@ -14,7 +11,7 @@ public enum DeskAction implements AbstractAction {
     REMOVE(){
         @Override
         public DeskModel action(DeskModel model, DeskService deskService) {
-            deskService.remove(model);
+            deskService.removeFromeCache(model);
             return null;
         }
     },

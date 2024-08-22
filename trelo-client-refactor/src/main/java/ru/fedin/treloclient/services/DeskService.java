@@ -88,7 +88,7 @@ public class DeskService {
         return deskRepository.save(deskModel);
     }
 
-    public void remove(DeskModel model) {
+    public void removeFromeCache(DeskModel model) {
         taskRepository.deleteAllById(model.getTasks().stream().map(TaskModel::getId).toList());
         columnRepository.deleteAllById(model.getColumns().stream().map(ColumnModel::getId).toList());
         deskRepository.deleteById(model.getId());

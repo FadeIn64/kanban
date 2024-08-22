@@ -3,14 +3,12 @@ package ru.fedin.treloclient.services;
 import com.fasterxml.uuid.Generators;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.stream.Task;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import ru.fedin.treloclient.dtos.TaskDto;
 import ru.fedin.treloclient.mappers.models.TaskModelMapper;
 import ru.fedin.treloclient.messaging.*;
-import ru.fedin.treloclient.models.DeskModel;
 import ru.fedin.treloclient.models.TaskModel;
 import ru.fedin.treloclient.models.UserModel;
 import ru.fedin.treloclient.repositories.redis.TaskRepository;
@@ -81,7 +79,7 @@ public class TaskService {
         return taskRepository.save(taskModel);
     }
 
-    public void remove(TaskModel model) {
+    public void removeFromCache(TaskModel model) {
         taskRepository.deleteById(model.getId());
     }
 }
