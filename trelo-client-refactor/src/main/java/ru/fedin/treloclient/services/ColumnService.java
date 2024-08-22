@@ -72,4 +72,8 @@ public class ColumnService {
     public ColumnModel save(ColumnModel columnModel) {
         return columnRepository.save(columnModel);
     }
+
+    public void removeFromCache(ColumnModel columnModel){
+        columnRepository.deleteById(columnModel.getId());
+    }
 }
