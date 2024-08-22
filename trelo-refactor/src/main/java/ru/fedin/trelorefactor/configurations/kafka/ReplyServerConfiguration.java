@@ -1,11 +1,13 @@
 package ru.fedin.trelorefactor.configurations.kafka;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -35,6 +37,17 @@ public class ReplyServerConfiguration {
         @Value("${kafka.topic.desk}")
         private String topic;
 
+        private String replyTopic(){
+            return topic.concat("-reply");
+        }
+
+        @Bean
+        public NewTopic replyDeskTopic(){
+            return TopicBuilder.name(replyTopic())
+                    .partitions(10)
+                    .build();
+        }
+
         public ProducerFactory<UUID, Message<DeskModel, DeskAction>> deskProducerFactory() {
             return getUuidMessageDefaultKafkaProducerFactory(new TypeReference<Message<DeskModel, DeskAction>>() {});
         }
@@ -43,7 +56,7 @@ public class ReplyServerConfiguration {
         public KafkaTemplate<UUID, Message<DeskModel, DeskAction>> deskKafkaTemplate() {
             KafkaTemplate<UUID, Message<DeskModel, DeskAction>> template;
             template = new KafkaTemplate<>(deskProducerFactory());
-            template.setDefaultTopic(topic.concat("-reply"));
+            template.setDefaultTopic(replyTopic());
             return template;
         }
     }
@@ -54,6 +67,17 @@ public class ReplyServerConfiguration {
         @Value("${kafka.topic.column}")
         private String topic;
 
+        private String replyTopic(){
+            return topic.concat("-reply");
+        }
+
+        @Bean
+        public NewTopic replyColumnTopic(){
+            return TopicBuilder.name(replyTopic())
+                    .partitions(10)
+                    .build();
+        }
+
         public ProducerFactory<UUID, Message<ColumnModel, ColumnAction>> columnProducerFactory() {
            return getUuidMessageDefaultKafkaProducerFactory(new TypeReference<Message<ColumnModel, ColumnAction>>() {});
         }
@@ -61,7 +85,7 @@ public class ReplyServerConfiguration {
         @Bean("ColumnTemplate")
         public KafkaTemplate<UUID, Message<ColumnModel, ColumnAction>> columnkKafkaTemplate() {
             KafkaTemplate<UUID, Message<ColumnModel, ColumnAction>> template = new KafkaTemplate<>(columnProducerFactory());
-            template.setDefaultTopic(topic.concat("-reply"));
+            template.setDefaultTopic(replyTopic());
             return template;
         }
     }
@@ -72,6 +96,17 @@ public class ReplyServerConfiguration {
         @Value("${kafka.topic.task}")
         private String topic;
 
+        private String replyTopic(){
+            return topic.concat("-reply");
+        }
+
+        @Bean
+        public NewTopic replyTaskTopic(){
+            return TopicBuilder.name(replyTopic())
+                    .partitions(10)
+                    .build();
+        }
+
         public ProducerFactory<UUID, Message<TaskModel, TaskAction>> taskProducerFactory() {
             return getUuidMessageDefaultKafkaProducerFactory(new TypeReference<Message<TaskModel, TaskAction>>() {});
         }
@@ -79,7 +114,7 @@ public class ReplyServerConfiguration {
         @Bean("TaskTemplate")
         public KafkaTemplate<UUID, Message<TaskModel, TaskAction>> taskKafkaTemplate() {
             KafkaTemplate<UUID, Message<TaskModel, TaskAction>> template = new KafkaTemplate<>(taskProducerFactory());
-            template.setDefaultTopic(topic.concat("-reply"));
+            template.setDefaultTopic(replyTopic());
             return template;
         }
     }
