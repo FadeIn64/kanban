@@ -20,6 +20,7 @@ import ru.fedin.treloclient.repositories.redis.DeskRepository;
 import ru.fedin.treloclient.repositories.redis.TaskRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -38,12 +39,14 @@ public class DeskService {
     }
 
     private DeskModel findModelById(long deskId) {
-        return deskRepository.findById(deskId).orElse(
-                    restClient.get()
+        return deskRepository.findById(deskId)
+                .orElse(save(
+                    Objects
+                    .requireNonNull(restClient.get()
                     .uri(String.format("/desk/%d", deskId))
                     .retrieve()
-                    .body(DeskModel.class)
-        );
+                    .body(DeskModel.class))
+        ));
     }
 
     public void create(DeskDto desk) {

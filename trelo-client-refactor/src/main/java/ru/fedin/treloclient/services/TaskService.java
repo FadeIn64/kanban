@@ -29,12 +29,12 @@ public class TaskService {
 
     private TaskModel findModelById(long id) {
         return taskRepository.findById(id)
-                .orElse(
+                .orElse(save(
                     restClient.get()
                     .uri(String.format("/task/%d", id))
                     .retrieve()
                     .body(TaskModel.class)
-        );
+        ));
     }
 
     private void send(TaskModel model, TaskAction action) {

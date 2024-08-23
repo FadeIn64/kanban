@@ -37,12 +37,12 @@ public class ColumnService {
     }
 
     private ColumnModel findModelById(long columnId) {
-        return columnRepository.findById(columnId).orElse(
+        return columnRepository.findById(columnId).orElse(save(
                     restClient.get()
                     .uri(String.format("/column/%d", columnId))
                     .retrieve()
                     .body(ColumnModel.class)
-        );
+        ));
     }
 
     public void remove(long columnId) {
