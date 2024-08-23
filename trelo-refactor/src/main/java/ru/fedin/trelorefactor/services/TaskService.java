@@ -2,6 +2,8 @@ package ru.fedin.trelorefactor.services;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedin.trelorefactor.dtos.HistoryDto;
@@ -18,6 +20,8 @@ import ru.fedin.trelorefactor.repositories.jpa.ColumnEntityRepository;
 import ru.fedin.trelorefactor.repositories.jpa.DeskRepository;
 import ru.fedin.trelorefactor.repositories.jpa.HistoryRepository;
 import ru.fedin.trelorefactor.repositories.jpa.TaskRepository;
+import ru.fedin.trelorefactor.search.SearchRequest;
+import ru.fedin.trelorefactor.search.SearchSpecification;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -122,5 +126,12 @@ public class TaskService {
         task.setColumnId(columnId);
         addHistory(task);
         task = taskRepository.save(task);
+    }
+
+    @Transactional
+    public Page<TaskDto> search(SearchRequest request){
+        SearchSpecification<Task> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return taskRepository.findAll(specification, pageable).map(taskMapper::toDto);
     }
 }
