@@ -28,11 +28,13 @@ public class TaskService {
 
 
     private TaskModel findModelById(long id) {
-        return restClient
-                .get()
-                .uri(String.format("/task/%d", id))
-                .retrieve()
-                .body(TaskModel.class);
+        return taskRepository.findById(id)
+                .orElse(
+                    restClient.get()
+                    .uri(String.format("/task/%d", id))
+                    .retrieve()
+                    .body(TaskModel.class)
+        );
     }
 
     private void send(TaskModel model, TaskAction action) {

@@ -38,11 +38,12 @@ public class DeskService {
     }
 
     private DeskModel findModelById(long deskId) {
-        return restClient
-                .get()
-                .uri(String.format("/desk/%d", deskId))
-                .retrieve()
-                .body(DeskModel.class);
+        return deskRepository.findById(deskId).orElse(
+                    restClient.get()
+                    .uri(String.format("/desk/%d", deskId))
+                    .retrieve()
+                    .body(DeskModel.class)
+        );
     }
 
     public void create(DeskDto desk) {
