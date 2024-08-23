@@ -1,34 +1,34 @@
 --Стоимость всех задач по доскам
-select dt.desk, desk.name, sum(dt.coast)
-from desk
-         join desk_task dt on desk.id = dt.desk
-group by dt.desk, desk.name;
+select dt.desk_id, desks.name, sum(dt.coast)
+from desks
+         join tasks dt on desks.id = dt.desk_id
+group by dt.desk_id, desks.name;
 
 --Стоимость задач по колонкам
-select distinct dc.desk, desk.name as desk_name, dc.name as column_name,
+select distinct dc.desk_id, desks.name as desk_name, dc.name as column_name,
                 case when sum(dt.coast) over (partition by dc.id) is null then 0
                      else sum(dt.coast) over (partition by dc.id) end as coast
-from desk
-         join desk_column dc
-         left join desk_task dt on dc.id = find_actual_column(dt.id)
-                   on desk.id = dc.desk
-group by dt.desk, desk.name, dc.id, dc.name, dc.name, dt.coast;
+from desks
+         join columns dc
+         left join tasks dt on dc.id = dt.column_id
+                   on desks.id = dc.desk_id
+group by dt.desk_id, desks.name, dc.id, dc.name, dc.name, dt.coast;
 
 --Статистика по времени проекта(доски)
-with tmp as( select public.desk.id, public.desk.name,
-                    (select desk_task.startdate
-                     from desk_task
-                     where desk_task.desk = public.desk.id
-                     order by desk_task.startdate
+with tmp as( select public.desks.id, public.desks.name,
+                    (select tasks.start_date
+                     from tasks
+                     where tasks.desk_id = public.desks.id
+                     order by tasks.start_date
                      limit 1
                     ) as start_date,
-                    (select desk_task.enddate
-                     from desk_task
-                     where desk_task.desk = public.desk.id
-                     order by desk_task.enddate desc
+                    (select tasks.end_date
+                     from tasks
+                     where tasks.desk_id = public.desks.id
+                     order by tasks.end_date desc
                      limit 1
                     ) as end_date
-             from desk)
+             from desks)
 select *,
        end_date - start_date as project_absolute_time,
        now() - start_date as time_from_start,
