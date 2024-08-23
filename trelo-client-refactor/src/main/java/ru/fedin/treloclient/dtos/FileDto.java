@@ -20,7 +20,13 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FileDto implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 232836038145089522L;
+
     private String description;
+
+    @SuppressWarnings("java:S1948")
+    private MultipartFile file;
 
     private String url;
 

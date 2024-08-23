@@ -1,4 +1,4 @@
-package ru.fedin.trelorefactor.controllers;
+package ru.fedin.treloclient.controllers;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.fedin.trelorefactor.dtos.minio.FileDto;
-import ru.fedin.trelorefactor.services.FileService;
+import ru.fedin.treloclient.dtos.FileDto;
+import ru.fedin.treloclient.services.FileService;
+
 
 import java.io.IOException;
 
