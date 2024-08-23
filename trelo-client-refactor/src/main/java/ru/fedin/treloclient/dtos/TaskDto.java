@@ -13,6 +13,8 @@ import ru.fedin.treloclient.validation.DataIntervalCheck;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -47,4 +49,6 @@ public class TaskDto implements Serializable {
     private long deskId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long columnId;
+
+    private List<FileDto> files = new ArrayList<>();
 }

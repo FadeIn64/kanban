@@ -3,12 +3,15 @@ package ru.fedin.trelorefactor.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import ru.fedin.trelorefactor.dtos.minio.FileDto;
 import ru.fedin.trelorefactor.eintites.enums.Importance;
 import ru.fedin.trelorefactor.validation.DataIntervalCheck;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DTO for {@link ru.fedin.trelorefactor.eintites.Task}
@@ -45,4 +48,6 @@ public class TaskDto implements Serializable {
     private long deskId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long columnId;
+
+    List<FileDto> files = new ArrayList<>();
 }
