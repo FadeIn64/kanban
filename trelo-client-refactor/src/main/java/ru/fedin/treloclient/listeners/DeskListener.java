@@ -30,8 +30,12 @@ public class DeskListener {
             groupId = "server",
             containerFactory = "deskKafkaListenerContainerFactory")
     public void listener( Message<DeskModel, DeskAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key) {
-        log.info("Received Desk message: {}", message);
 
+        if (!message.getStatus().getStatus().name().equals(Status.OK.name())) {
+            log.error("Received Desk message with status: {}", message.getStatus());
+            return;
+        }
+        message.getAction().action(message.getMessage(), deskService);
     }
 
 }

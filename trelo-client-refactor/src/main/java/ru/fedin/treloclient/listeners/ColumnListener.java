@@ -28,9 +28,12 @@ public class ColumnListener {
             groupId = "server",
             containerFactory = "columnKafkaListenerContainerFactory")
     public void listener( Message<ColumnModel, ColumnAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key){
-        log.info("Received Column message: {}", message);
 
-
+        if (!message.getStatus().getStatus().name().equals(Status.OK.name())) {
+            log.error("Received Column message with status: {}", message.getStatus());
+            return;
+        }
+        message.getAction().action(message.getMessage(), columnService);
     }
 
 }

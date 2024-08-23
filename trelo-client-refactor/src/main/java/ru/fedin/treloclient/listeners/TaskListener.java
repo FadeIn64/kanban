@@ -26,9 +26,12 @@ public class TaskListener {
             groupId = "server",
             containerFactory = "taskKafkaListenerContainerFactory")
     public void listener(Message<TaskModel, TaskAction> message, @Header(KafkaHeaders.RECEIVED_KEY) UUID key) {
-        log.info("Received Task message: {}", message);
 
-
+        if (!message.getStatus().getStatus().name().equals(Status.OK.name())) {
+            log.error("Received Task message with status: {}", message.getStatus());
+            return;
+        }
+        message.getAction().action(message.getMessage(), taskService);
     }
 
 }
