@@ -38,7 +38,10 @@ public class File {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "task_id", nullable = false)
+    @JoinColumn(name = "task_id", nullable = false, updatable = false, insertable = false)
     private Task task;
+
+    @Column(name = "task_id")
+    private Long taskId;
 
 }
