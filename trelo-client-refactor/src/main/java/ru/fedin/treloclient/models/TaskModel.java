@@ -17,6 +17,7 @@ import ru.fedin.treloclient.validation.DataIntervalCheck;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -57,6 +58,7 @@ public class TaskModel implements Serializable {
     private long deskId;
     @Indexed
     private long columnId;
+    private List<FileModel> files;
 
     @TimeToLive
     @Value("${spring.data.redis.time-to-live}")

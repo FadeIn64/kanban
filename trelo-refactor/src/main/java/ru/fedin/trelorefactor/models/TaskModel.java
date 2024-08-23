@@ -11,6 +11,7 @@ import ru.fedin.trelorefactor.validation.DataIntervalCheck;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * DTO for {@link ru.fedin.trelorefactor.eintites.Task}
@@ -41,4 +42,5 @@ public class TaskModel implements Serializable {
     private UserModel performer;
     private long deskId;
     private long columnId;
+    private List<FileModel> files;
 }
